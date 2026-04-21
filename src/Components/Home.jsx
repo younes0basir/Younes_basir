@@ -51,7 +51,6 @@ export default function Home() {
   const [darkMode, setDarkMode] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [expandedProject, setExpandedProject] = useState(null)
-  const [showComingSoon, setShowComingSoon] = useState(false)
   const [scrollProgress, setScrollProgress] = useState(0)
 
   useEffect(() => {
@@ -138,15 +137,16 @@ export default function Home() {
 
               {/* Right Icons */}
               <div className="flex items-center gap-5">
-                <a href="https://github.com/younes0basir" target="_blank" rel="noopener" className="hover:text-blue-600 transition">
+                <a href="https://github.com/younes0basir" target="_blank" rel="noopener" className="hover:text-blue-600 transition" aria-label="GitHub Profile">
                   <Github className="w-5 h-5" />
                 </a>
-                <a href="https://linkedin.com/in/younes-basir" target="_blank" rel="noopener" className="hover:text-blue-600 transition">
+                <a href="https://linkedin.com/in/younes-basir" target="_blank" rel="noopener" className="hover:text-blue-600 transition" aria-label="LinkedIn Profile">
                   <Linkedin className="w-5 h-5" />
                 </a>
                 <button
                   onClick={() => setDarkMode(!darkMode)}
                   className="p-2.5 rounded-full bg-gray-200 dark:bg-gray-800 hover:ring-4 hover:ring-purple-500/30 transition-all"
+                  aria-label="Toggle Dark Mode"
                 >
                   {darkMode ? <Sun className="w-5 h-5 text-yellow-400" /> : <Moon className="w-5 h-5" />}
                 </button>
@@ -161,37 +161,29 @@ export default function Home() {
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               {/* Left Content */}
               <div className="space-y-8">
-                <div className="inline-flex items-center gap-3 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-full text-sm font-semibold">
-                  <Building className="w-5 h-5" />
-                  <span>3rd Year Software Engineering Student • Seeking Data Internship</span>
+                <div className="reveal">
+                  <div className="inline-flex items-center gap-3 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-full text-sm font-semibold">
+                    <Building className="w-5 h-5" />
+                    <span>3rd Year Software Engineering Student • Seeking Data Internship</span>
+                  </div>
                 </div>
 
-                <h1 className="text-5xl md:text-7xl font-bold leading-tight">
+                <h1 className="text-5xl md:text-7xl font-bold leading-tight reveal reveal-delay-1">
                   Hey, I'm <span className="bg-linear-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Younes Basir</span>
                 </h1>
 
-                <div className="flex flex-wrap gap-4 pt-4">
-                  <a href="mailto:younes@example.com" className="inline-flex items-center gap-3 bg-linear-to-r from-blue-600 to-purple-600 text-white px-10 py-5 rounded-2xl text-xl font-bold hover:scale-110 transition shadow-2xl">
-                    <Mail className="w-7 h-7" />
-                    Get In Touch
-                  </a>
-                  <a href={cvFile} download="Younes_Basir_CV.pdf" className="inline-flex items-center gap-3 border-2 border-gray-900 dark:border-white px-10 py-5 rounded-2xl text-xl font-bold hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 transition">
-                    Download CV <ChevronRight className="w-5 h-5" />
-                  </a>
-                </div>
-
-                <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed">
+                <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed reveal reveal-delay-2">
                   I'm passionate about turning <span className="font-bold text-blue-600">data into insights</span> and building{' '}
                   <span className="font-bold text-purple-600">web applications</span> that solve real problems.
                 </p>
 
-                <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl">
+                <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl reveal reveal-delay-3">
                   Currently in my 3rd year of Software Engineering, exploring the world of data analysis and eager to apply my skills in a professional setting.
                 </p>
 
                 {/* Stats Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-6">
-                  <div className="bg-linear-to-br from-blue-50 to-indigo-100 dark:from-blue-950/50 dark:to-indigo-950/50 p-6 rounded-2xl border border-blue-200 dark:border-blue-800">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-6 reveal reveal-delay-3">
+                  <div className="bg-linear-to-br from-blue-50 to-indigo-100 dark:from-blue-950/50 dark:to-indigo-950/50 p-6 rounded-2xl border border-blue-200 dark:border-blue-800 hover:shadow-xl transition-shadow">
                     <div className="flex items-center gap-3 mb-3">
                       <BookOpen className="w-6 h-6 text-blue-600" />
                       <h4 className="font-bold">Currently Mastering</h4>
@@ -203,7 +195,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="bg-linear-to-br from-purple-50 to-pink-100 dark:from-purple-950/50 dark:to-pink-950/50 p-6 rounded-2xl border border-purple-200 dark:border-purple-800">
+                  <div className="bg-linear-to-br from-purple-50 to-pink-100 dark:from-purple-950/50 dark:to-pink-950/50 p-6 rounded-2xl border border-purple-200 dark:border-purple-800 hover:shadow-xl transition-shadow">
                     <h4 className="font-bold mb-4 flex items-center gap-3">
                       <Zap className="w-6 h-6 text-purple-600" /> Quick Stats
                     </h4>
@@ -216,83 +208,92 @@ export default function Home() {
                 </div>
 
                 {/* CTA */}
-                <div className="flex flex-wrap gap-4 pt-6">
-                  <a href="#projects"
-                    className="group inline-flex items-center gap-3 bg-linear-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-105 transform transition-all duration-300">
-                    <span>Explore My Work</span>
-                    <ChevronRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
-                  </a>
-
-                  <a href="mailto:younes@example.com"
-                    className="inline-flex items-center gap-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-8 py-4 rounded-2xl font-bold text-lg hover:scale-105 transition-all">
+                <div className="flex flex-wrap gap-4 pt-6 reveal reveal-delay-3">
+                  <a href="mailto:younes.basir@example.com" className="inline-flex items-center gap-3 bg-linear-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl text-lg font-bold hover:scale-105 transition-all shadow-xl hover:shadow-2xl">
                     <Mail className="w-6 h-6" />
-                    <span>Hire Me</span>
+                    Get In Touch
+                  </a>
+                  <a href={cvFile} download="Younes_Basir_CV.pdf" className="inline-flex items-center gap-3 border-2 border-gray-900 dark:border-white px-8 py-4 rounded-xl text-lg font-bold hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 transition-all">
+                    Download CV <ChevronRight className="w-5 h-5" />
                   </a>
                 </div>
               </div>
 
-              {/* Hero Card */}
-              <div className="relative flex justify-center">
+              {/* Polished Hero Card (Unified for Desktop & Mobile) */}
+              <div className="relative flex justify-center reveal reveal-delay-2">
                 <div className="relative group">
-                  <div className="absolute -inset-1 bg-linear-to-r from-blue-600 to-purple-600 rounded-3xl blur-xl opacity-60 group-hover:opacity-80 transition duration-1000"></div>
-                  <div className="relative bg-white dark:bg-gray-900 rounded-3xl p-10 shadow-2xl border border-gray-200 dark:border-gray-700">
-                    <div className="text-center space-y-6">
-                      <div className="w-48 h-48 mx-auto rounded-full overflow-hidden ring-8 ring-blue-500/20">
-                        <AvatarWithFallback src={photo} initials="YB" />
+                  {/* Glowing background effect */}
+                  <div className="absolute -inset-1 bg-linear-to-r from-blue-600 via-purple-600 to-pink-600 rounded-[3rem] blur-xl opacity-40 group-hover:opacity-70 transition duration-1000"></div>
+                  
+                  <div className="relative bg-white dark:bg-gray-900 rounded-[2.5rem] p-10 md:p-12 shadow-2xl border border-gray-200 dark:border-gray-800 transition-transform duration-500 hover:scale-[1.02]">
+                    <div className="text-center space-y-8">
+                      {/* Profile Image with animated ring */}
+                      <div className="relative w-48 h-48 mx-auto">
+                        <div className="absolute inset-0 bg-linear-to-tr from-blue-600 to-purple-600 rounded-full animate-spin-slow opacity-20"></div>
+                        <div className="relative w-full h-full rounded-full overflow-hidden ring-8 ring-blue-500/10 p-1 bg-white dark:bg-gray-800">
+                          <AvatarWithFallback src={photo} initials="YB" />
+                        </div>
                       </div>
 
-                      <div>
-                        <h2 className="text-3xl font-bold">Younes Basir</h2>
-                        <p className="text-gray-600 dark:text-gray-400 mt-1">Aspiring Data Analyst</p>
-                        <div className="flex justify-center gap-8 mt-6">
+                      <div className="space-y-4">
+                        <h2 className="text-4xl font-bold bg-linear-to-b from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent">
+                          Younes Basir
+                        </h2>
+                        <p className="text-xl text-blue-600 dark:text-blue-400 font-semibold tracking-wide uppercase text-sm">
+                          Aspiring Data Analyst
+                        </p>
+                        
+                        <div className="flex justify-center gap-10 pt-4">
                           <div className="text-center">
-                            <Code className="w-8 h-8 mx-auto text-blue-600" />
-                            <p className="text-xs mt-1">Frontend</p>
+                            <div className="w-12 h-12 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mb-2 mx-auto">
+                              <Code className="w-6 h-6 text-blue-600" />
+                            </div>
+                            <p className="text-xs font-bold text-gray-500 uppercase tracking-tighter">Frontend</p>
                           </div>
                           <div className="text-center">
-                            <Server className="w-8 h-8 mx-auto text-green-600" />
-                            <p className="text-xs mt-1">Backend</p>
+                            <div className="w-12 h-12 bg-green-50 dark:bg-green-900/30 rounded-2xl flex items-center justify-center mb-2 mx-auto">
+                              <Server className="w-6 h-6 text-green-600" />
+                            </div>
+                            <p className="text-xs font-bold text-gray-500 uppercase tracking-tighter">Backend</p>
                           </div>
                           <div className="text-center">
-                            <Cloud className="w-8 h-8 mx-auto text-purple-600" />
-                            <p className="text-xs mt-1">DevOps</p>
+                            <div className="w-12 h-12 bg-purple-50 dark:bg-purple-900/30 rounded-2xl flex items-center justify-center mb-2 mx-auto">
+                              <Cloud className="w-6 h-6 text-purple-600" />
+                            </div>
+                            <p className="text-xs font-bold text-gray-500 uppercase tracking-tighter">Data</p>
                           </div>
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-4 pt-4 text-center">
-                        <div className="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-xl">
-                          <div className="text-3xl font-bold text-blue-600">2</div>
-                          <p className="text-xs text-gray-600 dark:text-gray-400">Projects</p>
+                      <div className="grid grid-cols-2 gap-6 pt-6">
+                        <div className="bg-gray-50 dark:bg-gray-800/50 p-6 rounded-3xl border border-gray-100 dark:border-gray-700 hover:border-blue-500/30 transition-colors">
+                          <div className="text-4xl font-black text-blue-600">2</div>
+                          <p className="text-xs font-bold text-gray-500 uppercase mt-1">Live Projects</p>
                         </div>
-                        <div className="bg-purple-50 dark:bg-purple-900/30 p-4 rounded-xl">
-                          <div className="text-3xl font-bold text-purple-600">3.5+</div>
-                          <p className="text-xs text-gray-600 dark:text-gray-400">GPA</p>
+                        <div className="bg-gray-50 dark:bg-gray-800/50 p-6 rounded-3xl border border-gray-100 dark:border-gray-700 hover:border-purple-500/30 transition-colors">
+                          <div className="text-4xl font-black text-purple-600">3.5+</div>
+                          <p className="text-xs font-bold text-gray-500 uppercase mt-1">Academic GPA</p>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Floating Badges */}
-                <div className="absolute -left-10 top-10 bg-yellow-100 dark:bg-yellow-800 p-4 rounded-2xl shadow-lg animate-float">
-                  <p className="text-sm font-bold">Always Learning</p>
-                </div>
-                <div className="absolute -right-8 bottom-16 bg-pink-100 dark:bg-pink-900 p-4 rounded-2xl shadow-lg animate-float animation-delay-2000">
-                  <p className="text-sm font-bold">Problem Solver</p>
-                </div>
-                <div className="absolute left-1/2 -translate-x-1/2 -bottom-10 bg-green-100 dark:bg-green-900 p-4 rounded-2xl shadow-lg animate-bounce">
-                  <p className="text-sm font-bold">Let's Build Something Great!</p>
+                  {/* Floating Elements */}
+                  <div className="absolute -top-6 -right-6 bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 animate-float hidden md:block">
+                    <span className="text-2xl">🚀</span>
+                  </div>
+                  <div className="absolute -bottom-6 -left-6 bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 animate-float animation-delay-2000 hidden md:block">
+                    <span className="text-2xl">📊</span>
+                  </div>
                 </div>
               </div>
-            </div>
 
             {/* Rest of your sections (Tech Stack, Timeline, Achievements, CTA) */}
             {/* ... keep exactly as you had them — they’re already perfect! */}
             {/* I’ll just paste the Tech Stack part for completeness */}
 
-            <div className="mt-24">
-              <h3 className="text-center text-lg font-semibold text-gray-600 dark:text-gray-400 mb-8">Tech Stack & Tools I Love</h3>
+            <div id="about" className="mt-24 reveal">
+              <h3 className="text-center text-lg font-semibold text-gray-600 dark:text-gray-400 mb-12 uppercase tracking-widest">Tech Stack & Tools I Love</h3>
               <div className="flex flex-wrap justify-center gap-6">
                 {techStack.map((tech) => (
                   <div
@@ -315,8 +316,11 @@ export default function Home() {
                 ))}
               </div>
             </div>
+          </div>
+        </div>
+        </section>
 
-            {/* Projects Section */}
+        {/* Projects Section */}
             <section id="projects" className="mt-32">
               <div className="container mx-auto max-w-7xl px-6">
                 <div className="text-center mb-16">
@@ -328,7 +332,7 @@ export default function Home() {
                   </p>
                 </div>
 
-                <div className="grid lg:grid-cols-2 gap-8">
+                <div className="grid lg:grid-cols-2 gap-8 reveal">
                   {/* CourseWard Project */}
                   <div
                     className={`group relative bg-white dark:bg-gray-900 rounded-3xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700 transition-all duration-500 cursor-pointer ${expandedProject === 'courseward' ? 'lg:col-span-2' : 'hover:shadow-3xl hover:-translate-y-2'
@@ -500,7 +504,7 @@ export default function Home() {
             </section>
 
             {/* Contact Section */}
-            <section id="contact" className="mt-32 pb-20">
+            <section id="contact" className="mt-40 pb-20 reveal">
               <div className="container mx-auto max-w-7xl px-6">
                 <div className="text-center mb-16">
                   <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -630,52 +634,16 @@ export default function Home() {
                 </div>
               </div>
             </section>
-          </div>
-        </section>
+
+            {/* Back to Top Button */}
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className={`fixed bottom-8 right-8 p-4 bg-linear-to-r from-blue-600 to-purple-600 text-white rounded-2xl shadow-2xl transition-all duration-500 z-40 hover:scale-110 active:scale-95 ${scrolled ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}
+              aria-label="Back to Top"
+            >
+              <ChevronRight className="w-6 h-6 -rotate-90" />
+            </button>
       </div>
-
-      {/* Coming Soon Modal */}
-      {showComingSoon && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-6">
-          <div className="bg-white dark:bg-gray-900 rounded-3xl p-8 max-w-md w-full shadow-2xl border border-gray-200 dark:border-gray-700 transform scale-100 animate-fade-in">
-            <div className="text-center space-y-6">
-              <div className="w-20 h-20 mx-auto bg-linear-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
-                <Github className="w-10 h-10 text-white" />
-              </div>
-
-              <h3 className="text-3xl font-bold text-gray-900 dark:text-white">
-                Coming Soon!
-              </h3>
-
-              <p className="text-gray-600 dark:text-gray-300 text-lg">
-                Source code for this project will be available soon. I'm currently preparing the repository for public release.
-              </p>
-
-              <div className="space-y-3">
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  In the meantime, check out my other projects on GitHub:
-                </p>
-                <a
-                  href="https://github.com/younes0basir"
-                  target="_blank"
-                  rel="noopener"
-                  className="inline-flex items-center gap-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-6 py-3 rounded-xl font-semibold hover:scale-105 transition"
-                >
-                  <Github className="w-5 h-5" />
-                  View My GitHub
-                </a>
-              </div>
-
-              <button
-                onClick={() => setShowComingSoon(false)}
-                className="w-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-6 py-3 rounded-xl font-semibold hover:bg-gray-200 dark:hover:bg-gray-700 transition"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   )
 }
