@@ -52,6 +52,7 @@ export default function Home() {
   const [scrolled, setScrolled] = useState(false)
   const [expandedProject, setExpandedProject] = useState(null)
   const [scrollProgress, setScrollProgress] = useState(0)
+  const [showComingSoon, setShowComingSoon] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -168,52 +169,57 @@ export default function Home() {
                   </div>
                 </div>
 
-                <h1 className="text-5xl md:text-7xl font-bold leading-tight reveal reveal-delay-1">
+                <h1 className="text-6xl md:text-8xl font-extrabold leading-tight reveal reveal-delay-1 tracking-tight">
                   Hey, I'm <span className="bg-linear-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Younes Basir</span>
                 </h1>
 
-                <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed reveal reveal-delay-2">
-                  I'm passionate about turning <span className="font-bold text-blue-600">data into insights</span> and building{' '}
-                  <span className="font-bold text-purple-600">web applications</span> that solve real problems.
+                <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 leading-relaxed reveal reveal-delay-2 font-medium">
+                  I'm passionate about turning <span className="font-semibold text-blue-600">data into insights</span> and building{' '}
+                  <span className="font-semibold text-purple-600">web applications</span> that solve real problems.
                 </p>
 
-                <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl reveal reveal-delay-3">
+                <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl reveal reveal-delay-3 leading-relaxed">
                   Currently in my 3rd year of Software Engineering, exploring the world of data analysis and eager to apply my skills in a professional setting.
                 </p>
 
                 {/* Stats Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-6 reveal reveal-delay-3">
-                  <div className="bg-linear-to-br from-blue-50 to-indigo-100 dark:from-blue-950/50 dark:to-indigo-950/50 p-6 rounded-2xl border border-blue-200 dark:border-blue-800 hover:shadow-xl transition-shadow">
+                  <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 hover:shadow-2xl hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300 hover:-translate-y-1">
                     <div className="flex items-center gap-3 mb-3">
-                      <BookOpen className="w-6 h-6 text-blue-600" />
-                      <h4 className="font-bold">Currently Mastering</h4>
+                      <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                        <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                      </div>
+                      <h4 className="font-bold text-gray-900 dark:text-white">Currently Mastering</h4>
                     </div>
                     <div className="space-y-2 text-sm">
-                      <span className="block bg-white/70 dark:bg-gray-800/70 px-3 py-1 rounded-lg">Data Analysis with Python</span>
-                      <span className="block bg-white/70 dark:bg-gray-800/70 px-3 py-1 rounded-lg">SQL for Data Querying</span>
-                      <span className="block bg-white/70 dark:bg-gray-800/70 px-3 py-1 rounded-lg">Data Visualization & Storytelling</span>
+                      <span className="block bg-gray-100 dark:bg-gray-700/50 px-3 py-1.5 rounded-lg text-gray-700 dark:text-gray-300">Data Analysis with Python</span>
+                      <span className="block bg-gray-100 dark:bg-gray-700/50 px-3 py-1.5 rounded-lg text-gray-700 dark:text-gray-300">SQL for Data Querying</span>
+                      <span className="block bg-gray-100 dark:bg-gray-700/50 px-3 py-1.5 rounded-lg text-gray-700 dark:text-gray-300">Data Visualization & Storytelling</span>
                     </div>
                   </div>
 
-                  <div className="bg-linear-to-br from-purple-50 to-pink-100 dark:from-purple-950/50 dark:to-pink-950/50 p-6 rounded-2xl border border-purple-200 dark:border-purple-800 hover:shadow-xl transition-shadow">
-                    <h4 className="font-bold mb-4 flex items-center gap-3">
-                      <Zap className="w-6 h-6 text-purple-600" /> Quick Stats
+                  <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 hover:shadow-2xl hover:border-purple-300 dark:hover:border-purple-600 transition-all duration-300 hover:-translate-y-1">
+                    <h4 className="font-bold mb-4 flex items-center gap-3 text-gray-900 dark:text-white">
+                      <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center">
+                        <Zap className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                      </div>
+                      Quick Stats
                     </h4>
                     <div className="space-y-3 text-sm">
-                      <div className="flex justify-between"><span>Academic Projects</span><strong>2</strong></div>
-                      <div className="flex justify-between"><span>Courses Completed</span><strong>5+</strong></div>
-                      <div className="flex justify-between"><span>Ready to Learn</span><strong>100%</strong></div>
+                      <div className="flex justify-between text-gray-700 dark:text-gray-300"><span>Academic Projects</span><strong className="text-gray-900 dark:text-white">3</strong></div>
+                      <div className="flex justify-between text-gray-700 dark:text-gray-300"><span>Courses Completed</span><strong className="text-gray-900 dark:text-white">5+</strong></div>
+                      <div className="flex justify-between text-gray-700 dark:text-gray-300"><span>Ready to Learn</span><strong className="text-gray-900 dark:text-white">100%</strong></div>
                     </div>
                   </div>
                 </div>
 
                 {/* CTA */}
                 <div className="flex flex-wrap gap-4 pt-6 reveal reveal-delay-3">
-                  <a href="mailto:younes.basir@example.com" className="inline-flex items-center gap-3 bg-linear-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl text-lg font-bold hover:scale-105 transition-all shadow-xl hover:shadow-2xl">
+                  <a href="mailto:younes.basir@example.com" className="inline-flex items-center gap-3 bg-linear-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/25">
                     <Mail className="w-6 h-6" />
                     Get In Touch
                   </a>
-                  <a href={cvFile} download="Younes_Basir_CV.pdf" className="inline-flex items-center gap-3 border-2 border-gray-900 dark:border-white px-8 py-4 rounded-xl text-lg font-bold hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 transition-all">
+                  <a href={cvFile} download="Younes_Basir_CV.pdf" className="inline-flex items-center gap-3 border-2 border-gray-300 dark:border-gray-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 transition-all duration-300 hover:shadow-lg">
                     Download CV <ChevronRight className="w-5 h-5" />
                   </a>
                 </div>
@@ -225,7 +231,7 @@ export default function Home() {
                   {/* Glowing background effect */}
                   <div className="absolute -inset-1 bg-linear-to-r from-blue-600 via-purple-600 to-pink-600 rounded-[3rem] blur-xl opacity-40 group-hover:opacity-70 transition duration-1000"></div>
                   
-                  <div className="relative bg-white dark:bg-gray-900 rounded-[2.5rem] p-10 md:p-12 shadow-2xl border border-gray-200 dark:border-gray-800 transition-transform duration-500 hover:scale-[1.02]">
+                  <div className="relative bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-[2.5rem] p-10 md:p-12 shadow-2xl border border-gray-200/50 dark:border-gray-700/50 transition-transform duration-500 hover:scale-[1.02] hover:shadow-3xl">
                     <div className="text-center space-y-8">
                       {/* Profile Image with animated ring */}
                       <div className="relative w-48 h-48 mx-auto">
@@ -239,7 +245,7 @@ export default function Home() {
                         <h2 className="text-4xl font-bold bg-linear-to-b from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent">
                           Younes Basir
                         </h2>
-                        <p className="text-xl text-blue-600 dark:text-blue-400 font-semibold tracking-wide uppercase text-sm">
+                        <p className="text-sm text-blue-600 dark:text-blue-400 font-semibold tracking-wide uppercase">
                           Aspiring Data Analyst
                         </p>
                         
@@ -267,7 +273,7 @@ export default function Home() {
 
                       <div className="grid grid-cols-2 gap-6 pt-6">
                         <div className="bg-gray-50 dark:bg-gray-800/50 p-6 rounded-3xl border border-gray-100 dark:border-gray-700 hover:border-blue-500/30 transition-colors">
-                          <div className="text-4xl font-black text-blue-600">2</div>
+                          <div className="text-4xl font-black text-blue-600">3</div>
                           <p className="text-xs font-bold text-gray-500 uppercase mt-1">Live Projects</p>
                         </div>
                         <div className="bg-gray-50 dark:bg-gray-800/50 p-6 rounded-3xl border border-gray-100 dark:border-gray-700 hover:border-purple-500/30 transition-colors">
@@ -298,13 +304,15 @@ export default function Home() {
                 {techStack.map((tech) => (
                   <div
                     key={tech.label}
-                    className="group relative bg-white dark:bg-gray-800 px-6 py-4 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
+                    className="group relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-6 py-5 rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 hover:shadow-2xl hover:-translate-y-2 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300"
                   >
-                    <div className="flex items-center gap-3">
-                      <span className="text-3xl">{tech.icon}</span>
-                      <div>
-                        <p className="font-semibold">{tech.label}</p>
-                        <div className="w-32 bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-1">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700/50 rounded-xl flex items-center justify-center group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30 transition-colors duration-300">
+                        <span className="text-2xl">{tech.icon}</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-semibold text-gray-900 dark:text-white mb-2">{tech.label}</p>
+                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                           <div
                             className="bg-linear-to-r from-blue-600 to-purple-600 h-2 rounded-full transition-all duration-1000"
                             style={{ width: `${tech.level}%` }}
@@ -335,11 +343,11 @@ export default function Home() {
                 <div className="grid lg:grid-cols-2 gap-8 reveal">
                   {/* CourseWard Project */}
                   <div
-                    className={`group relative bg-white dark:bg-gray-900 rounded-3xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700 transition-all duration-500 cursor-pointer ${expandedProject === 'courseward' ? 'lg:col-span-2' : 'hover:shadow-3xl hover:-translate-y-2'
+                    className={`group relative bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-3xl overflow-hidden shadow-2xl border border-gray-200/50 dark:border-gray-700/50 transition-all duration-500 cursor-pointer ${expandedProject === 'courseward' ? 'lg:col-span-2' : 'hover:shadow-3xl hover:-translate-y-2 hover:border-blue-300 dark:hover:border-blue-600'
                       }`}
                     onClick={() => setExpandedProject(expandedProject === 'courseward' ? null : 'courseward')}
                   >
-                    <div className="absolute inset-0 bg-linear-to-r from-blue-600/10 to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="absolute inset-0 bg-linear-to-r from-blue-600/5 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                     {/* Project Image */}
                     <div className={`relative overflow-hidden transition-all duration-500 ${expandedProject === 'courseward' ? 'h-80' : 'h-64'
@@ -401,11 +409,11 @@ export default function Home() {
                       </div>
 
                       <div className="flex gap-4">
-                        <a href="https://courseward-14va.onrender.com/" target="_blank" rel="noopener" className="inline-flex items-center gap-2 bg-linear-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 transition">
+                        <a href="https://courseward-14va.onrender.com/" target="_blank" rel="noopener" className="inline-flex items-center gap-2 bg-linear-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
                           <ChevronRight className="w-4 h-4" />
                           Live Demo
                         </a>
-                        <button onClick={() => setShowComingSoon(true)} className="inline-flex items-center gap-2 border-2 border-gray-900 dark:border-white px-6 py-3 rounded-xl font-semibold hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 transition">
+                        <button onClick={() => setShowComingSoon(true)} className="inline-flex items-center gap-2 border-2 border-gray-300 dark:border-gray-600 px-6 py-3 rounded-xl font-semibold hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 transition-all duration-300 hover:shadow-lg">
                           <Github className="w-4 h-4" />
                           Source Code
                         </button>
@@ -413,13 +421,93 @@ export default function Home() {
                     </div>
                   </div>
 
+                  {/* Quincaillerie Fassi Project */}
+                  <div
+                    className={`group relative bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-3xl overflow-hidden shadow-2xl border border-gray-200/50 dark:border-gray-700/50 transition-all duration-500 cursor-pointer ${expandedProject === 'quincaillerie' ? 'lg:col-span-2' : 'hover:shadow-3xl hover:-translate-y-2 hover:border-orange-300 dark:hover:border-orange-600'
+                      }`}
+                    onClick={() => setExpandedProject(expandedProject === 'quincaillerie' ? null : 'quincaillerie')}
+                  >
+                    <div className="absolute inset-0 bg-linear-to-r from-orange-600/5 to-amber-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                    {/* Project Image */}
+                    <div className={`relative overflow-hidden transition-all duration-500 ${expandedProject === 'quincaillerie' ? 'h-80' : 'h-64'
+                      }`}>
+                      <img
+                        src="https://via.placeholder.com/800x400/f97316/ffffff?text=Quincaillerie+Fassi"
+                        alt="Quincaillerie Fassi Hardware Store"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent"></div>
+
+                      {/* Click indicator */}
+                      <div className="absolute top-4 right-4 bg-white/90 dark:bg-gray-900/90 px-3 py-1 rounded-full text-xs font-medium">
+                        {expandedProject === 'quincaillerie' ? 'Click to collapse' : 'Click to expand'}
+                      </div>
+                    </div>
+
+                    <div className="relative p-8">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-12 h-12 bg-linear-to-r from-orange-600 to-amber-600 rounded-xl flex items-center justify-center">
+                          <Briefcase className="w-6 h-6 text-white" />
+                        </div>
+                        <h3 className="text-2xl font-bold">Quincaillerie Fassi</h3>
+                      </div>
+
+                      <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm leading-relaxed">
+                        Fully functional e-commerce website for a hardware store with product catalog and customer management.
+                      </p>
+
+                      {/* Key Features - Hidden by default, shown on click */}
+                      <div className={`transition-all duration-500 overflow-hidden ${expandedProject === 'quincaillerie' ? 'max-h-96 opacity-100 mb-6' : 'max-h-0 opacity-0'
+                        }`}>
+                        <h4 className="font-semibold mb-3 text-gray-700 dark:text-gray-300">Key Features:</h4>
+                        <ul className="space-y-2 text-gray-600 dark:text-gray-400">
+                          <li className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                            Product catalog with search and filtering
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
+                            Shopping cart and checkout system
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            User authentication and admin dashboard
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="mb-6">
+                        <h4 className="font-semibold mb-3 text-gray-700 dark:text-gray-300">Technologies:</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {['React', 'Vite', 'Tailwind CSS', 'Node.js', 'MongoDB'].map((tech) => (
+                            <span key={tech} className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium">
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="flex gap-4">
+                        <a href="http://quincailleriefassi.ma/" target="_blank" rel="noopener" className="inline-flex items-center gap-2 bg-linear-to-r from-orange-600 to-amber-600 text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+                          <ChevronRight className="w-4 h-4" />
+                          Live Demo
+                        </a>
+                        <a href="https://github.com/younes1528/quincaillierie_fassi" target="_blank" rel="noopener" className="inline-flex items-center gap-2 border-2 border-gray-300 dark:border-gray-600 px-6 py-3 rounded-xl font-semibold hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 transition-all duration-300 hover:shadow-lg">
+                          <Github className="w-4 h-4" />
+                          Source Code
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Your Doctor Project */}
                   <div
-                    className={`group relative bg-white dark:bg-gray-900 rounded-3xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700 transition-all duration-500 cursor-pointer ${expandedProject === 'doctor' ? 'lg:col-span-2' : 'hover:shadow-3xl hover:-translate-y-2'
+                    className={`group relative bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-3xl overflow-hidden shadow-2xl border border-gray-200/50 dark:border-gray-700/50 transition-all duration-500 cursor-pointer ${expandedProject === 'doctor' ? 'lg:col-span-2' : 'hover:shadow-3xl hover:-translate-y-2 hover:border-green-300 dark:hover:border-green-600'
                       }`}
                     onClick={() => setExpandedProject(expandedProject === 'doctor' ? null : 'doctor')}
                   >
-                    <div className="absolute inset-0 bg-linear-to-r from-green-600/10 to-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="absolute inset-0 bg-linear-to-r from-green-600/5 to-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                     {/* Project Image */}
                     <div className={`relative overflow-hidden transition-all duration-500 ${expandedProject === 'doctor' ? 'h-80' : 'h-64'
@@ -481,11 +569,11 @@ export default function Home() {
                       </div>
 
                       <div className="flex gap-4">
-                        <a href="#" className="inline-flex items-center gap-2 bg-linear-to-r from-green-600 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 transition">
+                        <a href="#" className="inline-flex items-center gap-2 bg-linear-to-r from-green-600 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
                           <ChevronRight className="w-4 h-4" />
                           Live Demo
                         </a>
-                        <button onClick={() => setShowComingSoon(true)} className="inline-flex items-center gap-2 border-2 border-gray-900 dark:border-white px-6 py-3 rounded-xl font-semibold hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 transition">
+                        <button onClick={() => setShowComingSoon(true)} className="inline-flex items-center gap-2 border-2 border-gray-300 dark:border-gray-600 px-6 py-3 rounded-xl font-semibold hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 transition-all duration-300 hover:shadow-lg">
                           <Github className="w-4 h-4" />
                           Source Code
                         </button>
@@ -495,7 +583,7 @@ export default function Home() {
                 </div>
 
                 <div className="text-center mt-12">
-                  <a href="https://github.com/younes0basir" target="_blank" rel="noopener" className="inline-flex items-center gap-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-8 py-4 rounded-2xl font-bold text-lg hover:scale-105 transition">
+                  <a href="https://github.com/younes0basir" target="_blank" rel="noopener" className="inline-flex items-center gap-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-8 py-4 rounded-2xl font-bold text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
                     <Github className="w-6 h-6" />
                     View All Projects
                   </a>
@@ -517,7 +605,7 @@ export default function Home() {
 
                 <div className="grid lg:grid-cols-2 gap-12 items-start">
                   {/* Contact Form */}
-                  <div className="bg-white dark:bg-gray-900 rounded-3xl p-8 shadow-2xl border border-gray-200 dark:border-gray-700">
+                  <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-gray-200/50 dark:border-gray-700/50">
                     <form className="space-y-6" onSubmit={(e) => {
                       e.preventDefault();
                       const formData = new FormData(e.target);
@@ -538,7 +626,7 @@ export default function Home() {
                           type="text"
                           name="name"
                           required
-                          className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                          className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 hover:border-blue-400 dark:hover:border-blue-500"
                           placeholder="Your Name"
                         />
                       </div>
@@ -551,7 +639,7 @@ export default function Home() {
                           type="email"
                           name="email"
                           required
-                          className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                          className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 hover:border-blue-400 dark:hover:border-blue-500"
                           placeholder="your@email.com"
                         />
                       </div>
@@ -564,14 +652,14 @@ export default function Home() {
                           name="message"
                           required
                           rows={5}
-                          className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
+                          className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 hover:border-blue-400 dark:hover:border-blue-500 resize-none"
                           placeholder="Tell me about your project..."
                         />
                       </div>
 
                       <button
                         type="submit"
-                        className="w-full bg-linear-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:scale-105 transition shadow-2xl flex items-center justify-center gap-3"
+                        className="w-full bg-linear-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/25 flex items-center justify-center gap-3"
                       >
                         <Mail className="w-6 h-6" />
                         Send Message
@@ -581,9 +669,11 @@ export default function Home() {
 
                   {/* Contact Info */}
                   <div className="space-y-8">
-                    <div className="bg-linear-to-br from-blue-50 to-indigo-100 dark:from-blue-950/50 dark:to-indigo-950/50 rounded-3xl p-8 border border-blue-200 dark:border-blue-800">
-                      <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                        <Mail className="w-8 h-8 text-blue-600" />
+                    <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-gray-200/50 dark:border-gray-700/50">
+                      <h3 className="text-2xl font-bold mb-6 flex items-center gap-3 text-gray-900 dark:text-white">
+                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                          <Mail className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                        </div>
                         Get in Touch
                       </h3>
                       <div className="space-y-4">
@@ -599,9 +689,11 @@ export default function Home() {
                       </div>
                     </div>
 
-                    <div className="bg-linear-to-br from-purple-50 to-pink-100 dark:from-purple-950/50 dark:to-pink-950/50 rounded-3xl p-8 border border-purple-200 dark:border-purple-800">
-                      <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                        <Github className="w-8 h-8 text-purple-600" />
+                    <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-gray-200/50 dark:border-gray-700/50">
+                      <h3 className="text-2xl font-bold mb-6 flex items-center gap-3 text-gray-900 dark:text-white">
+                        <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center">
+                          <Github className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                        </div>
                         Let's Collaborate
                       </h3>
                       <div className="space-y-4">
@@ -613,7 +705,7 @@ export default function Home() {
                             href="https://github.com/younes0basir"
                             target="_blank"
                             rel="noopener"
-                            className="inline-flex items-center gap-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-6 py-3 rounded-xl font-semibold hover:scale-105 transition"
+                            className="inline-flex items-center gap-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-6 py-3 rounded-xl font-semibold hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
                           >
                             <Github className="w-5 h-5" />
                             GitHub
@@ -622,7 +714,7 @@ export default function Home() {
                             href="https://linkedin.com/in/younes-basir"
                             target="_blank"
                             rel="noopener"
-                            className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 transition"
+                            className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
                           >
                             <Linkedin className="w-5 h-5" />
                             LinkedIn
@@ -643,6 +735,29 @@ export default function Home() {
             >
               <ChevronRight className="w-6 h-6 -rotate-90" />
             </button>
+
+            {/* Coming Soon Modal */}
+            {showComingSoon && (
+              <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowComingSoon(false)}>
+                <div className="bg-white dark:bg-gray-900 rounded-3xl p-8 max-w-md w-full shadow-2xl transform transition-all" onClick={(e) => e.stopPropagation()}>
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <Github className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">Coming Soon</h3>
+                    <p className="text-gray-600 dark:text-gray-300 mb-6">
+                      The source code for this project will be available soon. Stay tuned for updates!
+                    </p>
+                    <button
+                      onClick={() => setShowComingSoon(false)}
+                      className="w-full bg-linear-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 transition-all duration-300 shadow-lg"
+                    >
+                      Got it
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
       </div>
     </>
   )
