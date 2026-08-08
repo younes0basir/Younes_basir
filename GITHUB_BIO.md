@@ -1,14 +1,14 @@
 # Hi there! 👋 I'm Younes Basir
 
 <div align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Outfit&weight=600&size=28&duration=4000&pause=1000&color=3B82F6&center=true&vCenter=true&width=600&lines=Software+Engineering+Student+%7C+Aspiring+Data+Analyst" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=700&size=30&duration=3500&pause=2000&color=3B82F6&center=true&vCenter=true&width=650&lines=Hi+there!+👋;I'm+Younes+Basir;Software+Engineering+Student+%7C+Data+Analyst;Turning+Data+Into+Insights+%7C+Building+Web+Apps;Python+%7C+React+%7C+SQL+%7C+Data+Viz" alt="Typing SVG" />
 </div>
 
 ---
 
 ## 🚀 About Me
 
-I'm a **3rd-year Software Engineering student** passionate about turning **data into insights** and building **web applications** that solve real problems. Currently seeking a data internship to apply my skills in Python, SQL, and data visualization.
+I'm a **3rd-year  Software Engineering student** passionate about turning **data into insights** and building **web applications** that solve real problems. Currently seeking a data internship to apply my skills in Python, SQL, and data visualization.
 
 - 🔭 I'm currently working on **data analysis projects** and **web development**
 - 🌱 I'm learning **Python, SQL, Excel, and Data Visualization**
