@@ -173,6 +173,7 @@ export default function Features() {
   const [lightbox, setLightbox] = useState<{ card: ProjectCard; idx: number } | null>(null);
   const paused = userPaused || hoverPaused;
   const railRef = useRef<HTMLDivElement>(null);
+  const skipRailScroll = useRef(true);
   const cardRef = useRef<HTMLDivElement>(null);
   const swipeStart = useRef<{ x: number; y: number } | null>(null);
   const mediaWidth = useMediaBaseWidth();
@@ -239,18 +240,33 @@ export default function Features() {
     return () => window.clearInterval(t);
   }, [paused, filtered.length, reduceMotion, viewMode]);
 
-  // Scroll rail to active
+  // Scroll rail to active (container only — skip first run to avoid page jump on load)
   useEffect(() => {
+    if (skipRailScroll.current) {
+      skipRailScroll.current = false;
+      return;
+    }
+
     const rail = railRef.current;
     const btn = rail?.querySelector<HTMLButtonElement>('[aria-selected="true"]');
     if (!rail || !btn) return;
+
+    const behavior = reduceMotion ? "auto" : "smooth";
+    const railRect = rail.getBoundingClientRect();
+    const btnRect = btn.getBoundingClientRect();
+
     if (window.innerWidth < 1024) {
-      const r = rail.getBoundingClientRect();
-      const b = btn.getBoundingClientRect();
-      rail.scrollBy({ left: b.left - r.left - (r.width - b.width) / 2, behavior: reduceMotion ? "auto" : "smooth" });
-    } else {
-      btn.scrollIntoView({ block: "nearest", behavior: reduceMotion ? "auto" : "smooth" });
+      rail.scrollBy({
+        left: btnRect.left - railRect.left - (railRect.width - btnRect.width) / 2,
+        behavior,
+      });
+      return;
     }
+
+    rail.scrollBy({
+      top: btnRect.top - railRect.top - (railRect.height - btnRect.height) / 2,
+      behavior,
+    });
   }, [activeIndex, reduceMotion]);
 
   // Keyboard nav: left/right project, up/down image

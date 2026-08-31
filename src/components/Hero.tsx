@@ -1,13 +1,11 @@
 import { useCallback, useEffect, useRef } from "react";
 import type { PointerEvent } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { HERO_VIDEO_URL } from "../lib/hero.ts";
 import WordsPullUp from "./WordsPullUp.tsx";
 import { useMagnetic } from "../hooks/useMagnetic.ts";
 import { EASE_SOFT } from "../lib/motion.ts";
 import { NAV_ITEMS } from "../lib/site.ts";
-
-const HERO_VIDEO =
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4";
 
 export default function Hero() {
   const reduceMotion = useReducedMotion();
@@ -60,7 +58,7 @@ export default function Hero() {
             muted
             playsInline
             aria-hidden="true"
-            src={HERO_VIDEO}
+            src={HERO_VIDEO_URL}
             className="absolute inset-0 h-full w-full object-cover"
           />
         )}

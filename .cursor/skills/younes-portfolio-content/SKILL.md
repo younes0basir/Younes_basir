@@ -28,7 +28,7 @@ Read and follow `YOUNES_BASIR.md` at the repo root before changing copy. Do not 
 
 | Method | Value |
 | --- | --- |
-| Email | younes.basir@example.com |
+| Email | younesbasir0@gmail.com |
 | GitHub | https://github.com/younes0basir |
 | LinkedIn | https://linkedin.com/in/younes-basir |
 | CV | `src/assets/cv_younes_basir.pdf` |

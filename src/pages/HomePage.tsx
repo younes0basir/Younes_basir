@@ -1,3 +1,5 @@
+import { useLayoutEffect } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import Header from "../components/Header.tsx";
 import Hero from "../components/Hero.tsx";
 import SkillsMarquee from "../components/SkillsMarquee.tsx";
@@ -6,12 +8,31 @@ import Features from "../components/Features.tsx";
 import Gallery from "../components/Gallery.tsx";
 import Contact from "../components/Contact.tsx";
 import Footer from "../components/Footer.tsx";
+import { EASE_SOFT } from "../lib/motion.ts";
+import { resetScrollAfterPaint } from "../lib/scroll.ts";
 
-export default function HomePage() {
+type HomePageProps = {
+  reveal?: boolean;
+};
+
+export default function HomePage({ reveal = false }: HomePageProps) {
+  const reduceMotion = useReducedMotion();
+
+  useLayoutEffect(() => {
+    if (!window.location.hash) {
+      resetScrollAfterPaint();
+    }
+  }, []);
+
   return (
-    <div className="min-h-screen bg-black">
+    <motion.div
+      className="min-h-screen bg-black"
+      initial={reveal && !reduceMotion ? { opacity: 0 } : false}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.75, ease: EASE_SOFT, delay: reveal ? 0.15 : 0 }}
+    >
       <Header />
-      <main>
+      <main id="main">
         <Hero />
         <SkillsMarquee />
         <About />
@@ -20,6 +41,6 @@ export default function HomePage() {
         <Contact />
       </main>
       <Footer />
-    </div>
+    </motion.div>
   );
 }

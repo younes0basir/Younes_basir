@@ -162,6 +162,28 @@ button:focus-visible {
     transform: none;
     transition: none;
   }
+
+  .page-loader {
+    display: none;
+  }
+}
+
+.page-loader {
+  will-change: transform;
+}
+
+.page-loader-glow {
+  background:
+    radial-gradient(420px circle at 50% 38%, rgba(222, 219, 200, 0.12), transparent 62%),
+    radial-gradient(280px circle at 18% 78%, rgba(222, 219, 200, 0.06), transparent 70%);
+}
+
+.page-loader-track {
+  position: relative;
+}
+
+.page-loader-bar {
+  box-shadow: 0 0 18px rgba(222, 219, 200, 0.35);
 }
 
 /* 3D flip cards — gallery */

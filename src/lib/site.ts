@@ -1,4 +1,4 @@
-export const EMAIL = "younes.basir@example.com";
+export const EMAIL = "younesbasir0@gmail.com";
 export const GITHUB_URL = "https://github.com/younes0basir";
 export const LINKEDIN_URL = "https://linkedin.com/in/younes-basir";
 

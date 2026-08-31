@@ -20,7 +20,7 @@
 
 | Method   | Value                                 |
 | -------- | ------------------------------------- |
-| Email    | younes.basir@example.com              |
+| Email    | younesbasir0@gmail.com                |
 | GitHub   | https://github.com/younes0basir       |
 | LinkedIn | https://linkedin.com/in/younes-basir  |
 | CV       | `src/assets/cv_younes_basir.pdf` (downloadable) |
@@ -78,4 +78,4 @@
 - Portfolio repo: https://github.com/younes0basir/Younes_BASIR
 - GitHub: https://github.com/younes0basir
 - LinkedIn: https://linkedin.com/in/younes-basir
-- Email: younes.basir@example.com
+- Email: younesbasir0@gmail.com

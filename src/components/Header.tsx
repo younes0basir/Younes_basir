@@ -100,7 +100,7 @@ export default function Header() {
 
   return (
     <>
-      <a href="#about" className="skip-link">
+      <a href="#main" className="skip-link">
         Skip to content
       </a>
 

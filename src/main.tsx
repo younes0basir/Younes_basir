@@ -4,6 +4,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppwriteProvider } from "@appwrite.io/react";
 import "./index.css";
 import App from "./App.tsx";
+import { installScrollGuards } from "./lib/scroll.ts";
+
+installScrollGuards();
 
 const queryClient = new QueryClient({
   defaultOptions: {
