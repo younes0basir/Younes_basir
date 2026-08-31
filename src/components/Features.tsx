@@ -11,6 +11,7 @@ import { ArrowUpRight, Check, ChevronLeft, ChevronRight, CodeXml, ExternalLink, 
 import MediaPreview from "./MediaPreview.tsx";
 import WordsPullUpMultiStyle from "./WordsPullUpMultiStyle.tsx";
 import { useMagnetic } from "../hooks/useMagnetic.ts";
+import { useIsCompactProjects } from "../hooks/useMediaQuery.ts";
 import { useProjects } from "../hooks/useProjects.ts";
 import { EASE_SOFT } from "../lib/motion.ts";
 import { frameObjectClass, resolveMainImagePublicId } from "../types/media.ts";
@@ -33,7 +34,8 @@ function useMediaBaseWidth() {
       const v = window.innerWidth;
       if (v >= 1280) setWidth(1600);
       else if (v >= 768) setWidth(1200);
-      else setWidth(900);
+      else if (v >= 640) setWidth(768);
+      else setWidth(480);
     };
     update();
     window.addEventListener("resize", update);
@@ -160,6 +162,7 @@ const slideVariants = {
 export default function Features() {
   const { projects, isLoading, isError } = useProjects();
   const reduceMotion = useReducedMotion();
+  const isCompact = useIsCompactProjects();
   const liveCta = useMagnetic(0.18);
   const [category, setCategory] = useState<string>("all");
   const [viewMode, setViewMode] = useState<"showcase" | "grid">("showcase");
@@ -195,6 +198,7 @@ export default function Features() {
   const liveHref = active ? externalHref(active.href) : undefined;
   const sourceHref = active ? externalHref(active.sourceHref) : undefined;
   const liveCount = projects.filter((p) => Boolean(externalHref(p.href))).length;
+  const resolvedViewMode = isCompact ? "grid" : viewMode;
 
   // tilt
   const mx = useMotionValue(0);
@@ -206,7 +210,7 @@ export default function Features() {
   const glareX = useTransform(springX, [-50, 50], ["0%", "100%"]);
 
   const handleCardMouseMove = (e: React.MouseEvent) => {
-    if (reduceMotion || !cardRef.current) return;
+    if (reduceMotion || isCompact || !cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     mx.set((e.clientX - rect.left - rect.width / 2) * 0.12);
     my.set((e.clientY - rect.top - rect.height / 2) * 0.12);
@@ -232,13 +236,13 @@ export default function Features() {
 
   // Autoplay on filtered list
   useEffect(() => {
-    if (reduceMotion || paused || filtered.length < 2 || viewMode === "grid") return;
+    if (reduceMotion || paused || filtered.length < 2 || resolvedViewMode === "grid") return;
     const t = window.setInterval(() => {
       setDirection(1);
       setActiveIndex((c) => (c + 1) % filtered.length);
     }, AUTOPLAY_MS);
     return () => window.clearInterval(t);
-  }, [paused, filtered.length, reduceMotion, viewMode]);
+  }, [paused, filtered.length, reduceMotion, resolvedViewMode]);
 
   // Scroll rail to active (container only — skip first run to avoid page jump on load)
   useEffect(() => {
@@ -302,7 +306,7 @@ export default function Features() {
   };
 
   return (
-    <section id="projects" className="relative overflow-hidden bg-black px-4 py-20 md:px-8 md:py-28">
+    <section id="projects" className="relative overflow-hidden bg-black px-3 py-16 sm:px-4 sm:py-20 md:px-8 md:py-28">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.14]" />
       <div className="project-glow pointer-events-none absolute inset-0" />
       {!reduceMotion ? (
@@ -312,23 +316,24 @@ export default function Features() {
         </>
       ) : null}
 
-      <div className="relative mx-auto max-w-6xl">
+      <div className="relative mx-auto max-w-6xl min-w-0">
         {/* Header */}
         <div className="flex flex-col gap-6">
           <motion.div initial={reduceMotion ? false : { opacity: 0, y: 18 }} whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.6, ease: EASE_SOFT }} className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div>
               <p className="inline-flex items-center gap-2 text-[11px] tracking-[0.2em] text-primary uppercase"><span className="h-px w-6 bg-primary/60" /> Selected work <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] normal-case tracking-normal text-gray-300">{filtered.length} case{filtered.length !== 1 ? "s" : ""}</span></p>
-              <WordsPullUpMultiStyle className="mt-4 max-w-[18ch] text-left text-[2rem] leading-[0.9] sm:text-4xl md:text-[2.85rem]" segments={[{ text: "Live projects,", className: "text-[#E1E0CC] font-normal" }, { text: "built and shipped end to end.", className: "font-serif italic text-[#E1E0CC]", newline: true }]} />
+              <WordsPullUpMultiStyle className="mt-4 max-w-[18ch] text-left text-[clamp(1.65rem,6vw,2.85rem)] leading-[0.9]" segments={[{ text: "Live projects,", className: "text-[#E1E0CC] font-normal" }, { text: "built and shipped end to end.", className: "font-serif italic text-[#E1E0CC]", newline: true }]} />
             </div>
             <div className="max-w-sm space-y-3 md:text-right">
-              <p className="text-sm leading-relaxed text-gray-400">{liveCount > 0 ? `${liveCount} live product${liveCount === 1 ? "" : "s"} — tap any card to inspect the build, stack, and highlights.` : "Projects loading from the portfolio database."}</p>
+              <p className="text-sm leading-relaxed text-gray-400 lg:hidden">Tap a project card to view the full case study, stack, and live links.</p>
+              <p className="hidden text-sm leading-relaxed text-gray-400 lg:block">{liveCount > 0 ? `${liveCount} live product${liveCount === 1 ? "" : "s"} — tap any card to inspect the build, stack, and highlights.` : "Projects loading from the portfolio database."}</p>
               <p className="hidden items-center justify-end gap-1.5 text-[11px] tracking-wide text-gray-500 md:inline-flex"><Layers className="h-3.5 w-3.5" /> Drag or use ← → to navigate • {filtered.length > 1 ? "Autoplay pauses on hover" : null}</p>
             </div>
           </motion.div>
 
           {/* Filter + view switcher */}
           <motion.div initial={reduceMotion ? false : { opacity: 0, y: 10 }} whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }} className="flex flex-col gap-3 border-y border-white/5 py-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label="Filter by category">
+            <div className="no-scrollbar -mx-1 flex gap-2 overflow-x-auto pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:pb-0" role="tablist" aria-label="Filter by category">
               {categories.map((cat) => {
                 const isActive = category === cat;
                 const label = cat === "all" ? "All" : cat;
@@ -350,8 +355,8 @@ export default function Features() {
               })}
             </div>
 
-            <div className="flex items-center gap-2 self-start sm:self-auto">
-              <div className="inline-flex rounded-full border border-white/10 bg-white/[0.03] p-1 backdrop-blur-sm">
+            <div className="hidden flex-col gap-2.5 lg:flex lg:flex-row lg:items-center lg:justify-between lg:gap-3">
+              <div className="inline-flex w-full rounded-full border border-white/10 bg-white/[0.03] p-1 backdrop-blur-sm lg:w-auto">
                 <button
                   type="button"
                   aria-pressed={viewMode === "showcase"}
@@ -369,7 +374,7 @@ export default function Features() {
                   <Grid3x3 className="h-3.5 w-3.5" /> Grid
                 </button>
               </div>
-              {viewMode === "showcase" && filtered.length > 1 && !reduceMotion ? (
+              {resolvedViewMode === "showcase" && filtered.length > 1 && !reduceMotion ? (
                 <button
                   type="button"
                   onClick={() => setUserPaused((v) => !v)}
@@ -393,11 +398,13 @@ export default function Features() {
             <p className="text-sm text-gray-400">No projects match “{category}”.</p>
             <button type="button" onClick={() => setCategory("all")} className="mt-3 inline-flex rounded-full bg-primary px-4 py-2 text-sm font-medium text-black">Clear filter</button>
           </motion.div>
-        ) : viewMode === "grid" ? (
-          <motion.div layout className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        ) : resolvedViewMode === "grid" ? (
+          <>
+          <motion.div layout className="mt-8 grid min-w-0 grid-cols-1 gap-4 sm:mt-10 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
             {filtered.map((project, idx) => {
               const pid = resolveMainImagePublicId(project);
               const live = Boolean(externalHref(project.href));
+              const isSelected = isCompact && idx === activeIndex;
               return (
                 <motion.button
                   key={project.id}
@@ -406,23 +413,31 @@ export default function Features() {
                   initial={reduceMotion ? false : { opacity: 0, y: 16, scale: 0.98 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.45, delay: idx * 0.04, ease: EASE_SOFT }}
-                  whileHover={reduceMotion ? undefined : { y: -4 }}
-                  onClick={() => { setViewMode("showcase"); setActiveIndex(idx); }}
-                  className="group relative flex flex-col overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#0f0f0f] text-left transition-colors hover:border-white/20"
+                  whileHover={reduceMotion || isCompact ? undefined : { y: -4 }}
+                  onClick={() => {
+                    setActiveIndex(idx);
+                    if (!isCompact) {
+                      setViewMode("showcase");
+                    }
+                  }}
+                  className={`group relative flex w-full min-w-0 flex-col overflow-hidden rounded-[1.25rem] border text-left transition-colors sm:rounded-[1.75rem] ${
+                    isSelected
+                      ? "border-primary/40 bg-[#121212] ring-1 ring-primary/20"
+                      : "border-white/10 bg-[#0f0f0f] hover:border-white/20"
+                  }`}
                 >
                   <div className="relative aspect-[16/10] overflow-hidden bg-[#111]">
-                    {pid ? <MediaPreview publicId={pid} alt={project.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" frame={project.imageFrame} baseWidth={640} /> : <div className="flex h-full items-center justify-center text-gray-600">{project.title}</div>}
+                    {pid ? <MediaPreview publicId={pid} alt={project.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" frame={project.imageFrame} baseWidth={640} /> : <div className="flex h-full items-center justify-center px-4 text-center text-sm text-gray-600">{project.title}</div>}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                    <div className="absolute left-3 top-3 flex items-center gap-2">
-                      <span className="rounded-full border border-white/15 bg-black/55 px-2.5 py-1 text-[10px] tracking-[0.14em] text-white uppercase backdrop-blur-sm">{project.number} · {project.category}</span>
+                    <div className="absolute top-3 left-3 flex max-w-[calc(100%-1.5rem)] flex-wrap items-center gap-1.5">
+                      <span className="rounded-full border border-white/15 bg-black/55 px-2 py-1 text-[10px] tracking-[0.12em] text-white uppercase backdrop-blur-sm">{project.number} · {project.category}</span>
                       <StatusBadge live={live} />
                     </div>
-                    <span className="absolute bottom-3 right-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white text-black opacity-0 transition-all duration-300 group-hover:opacity-100"><ArrowUpRight className="h-4 w-4" /></span>
                   </div>
-                  <div className="flex flex-1 flex-col p-5">
-                    <h3 className="font-serif text-xl leading-tight text-[#E1E0CC] italic">{project.title}</h3>
-                    <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-gray-400">{project.description}</p>
-                    <div className="mt-4 flex flex-wrap gap-1.5">
+                  <div className="flex flex-1 flex-col p-4 sm:p-5">
+                    <h3 className="font-serif text-lg leading-tight text-[#E1E0CC] italic sm:text-xl">{project.title}</h3>
+                    <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-gray-400">{project.description}</p>
+                    <div className="mt-3 flex flex-wrap gap-1.5">
                       {project.stack.slice(0, 3).map((s) => (
                         <span key={s} className="rounded-full border border-white/10 bg-white/[0.03] px-2 py-1 text-[10px] text-gray-400">{s}</span>
                       ))}
@@ -433,6 +448,133 @@ export default function Features() {
               );
             })}
           </motion.div>
+
+          {isCompact && active ? (
+            <div className="mt-4 min-w-0 lg:hidden" aria-live="polite">
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={active.id}
+                  custom={direction}
+                  variants={reduceMotion ? undefined : slideVariants}
+                  initial={reduceMotion ? false : "enter"}
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.45, ease: EASE_SOFT }}
+                  className="overflow-hidden rounded-[1.25rem] border border-white/10 bg-[#0f0f0f]"
+                >
+                  {activeImages.length > 0 ? (
+                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-black">
+                      <MediaPreview
+                        publicId={activeImageId}
+                        alt={active.title}
+                        className="h-full w-full object-cover"
+                        frame={active.imageFrame}
+                        baseWidth={mediaWidth}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setLightbox({ card: active, idx: imageIndex })}
+                        className="absolute top-3 right-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md"
+                        aria-label="Expand image"
+                      >
+                        <Maximize2 className="h-4 w-4" />
+                      </button>
+                      {filtered.length > 1 ? (
+                        <div className="absolute inset-x-3 bottom-3 flex items-center justify-between gap-2">
+                          <button
+                            type="button"
+                            onClick={() => cycleProject(-1)}
+                            className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md"
+                            aria-label="Previous project"
+                          >
+                            <ChevronLeft className="h-4 w-4" />
+                          </button>
+                          <span className="rounded-full bg-black/60 px-2.5 py-1 text-[11px] text-white backdrop-blur-sm">
+                            {activeIndex + 1} / {filtered.length}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => cycleProject(1)}
+                            className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md"
+                            aria-label="Next project"
+                          >
+                            <ChevronRight className="h-4 w-4" />
+                          </button>
+                        </div>
+                      ) : null}
+                    </div>
+                  ) : null}
+
+                  <div className="grid gap-0">
+                    <div className="p-4">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] tracking-[0.14em] text-primary uppercase">
+                          <span className="h-1 w-1 rounded-full bg-primary" /> {active.category} — {active.number}
+                        </span>
+                        {active.featured ? (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-[#E1E0CC] px-2.5 py-1 text-[11px] font-medium tracking-wide text-black">
+                            <Sparkles className="h-3 w-3" /> Featured
+                          </span>
+                        ) : null}
+                      </div>
+                      <h3 className="mt-3 font-serif text-2xl leading-[0.95] text-[#E1E0CC] italic">{active.title}</h3>
+                      <p className="mt-3 text-sm leading-relaxed text-gray-300">{active.description}</p>
+                      {active.items.length > 0 ? (
+                        <ul className="mt-5 space-y-2">
+                          {active.items.slice(0, 3).map((item) => (
+                            <li key={item} className="flex gap-3 rounded-xl border border-white/5 bg-white/[0.02] px-3 py-2.5 text-sm leading-relaxed text-[#E1E0CC]/90">
+                              <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary text-black">
+                                <Check className="h-3 w-3" />
+                              </span>
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+                    </div>
+
+                    <div className="border-t border-white/5 bg-white/[0.02] p-4">
+                      <p className="text-[11px] tracking-[0.14em] text-gray-500 uppercase">Tech stack</p>
+                      <ul className="mt-3 flex flex-wrap gap-1.5">
+                        {active.stack.map((tech) => (
+                          <li key={tech} className="rounded-full border border-white/10 bg-[#1c1c1c] px-3 py-1.5 text-xs text-[#E1E0CC]">
+                            {tech}
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="mt-4 grid gap-2">
+                        {liveHref ? (
+                          <a
+                            href={liveHref}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-medium text-black"
+                          >
+                            View live <ExternalLink className="h-3.5 w-3.5" />
+                          </a>
+                        ) : (
+                          <span className="inline-flex h-11 w-full items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm text-gray-400">
+                            Coming soon
+                          </span>
+                        )}
+                        {sourceHref ? (
+                          <a
+                            href={sourceHref}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-5 text-sm font-medium text-[#E1E0CC]"
+                          >
+                            <CodeXml className="h-4 w-4" /> Source code
+                          </a>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          ) : null}
+          </>
         ) : (
           <div
             className="mt-10 outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
@@ -443,14 +585,14 @@ export default function Features() {
             onFocus={() => setHoverPaused(true)}
             onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setHoverPaused(false); }}
           >
-            <div className="grid gap-6 lg:grid-cols-12 lg:items-start lg:gap-7">
+            <div className="grid min-w-0 gap-6 lg:grid-cols-12 lg:items-start lg:gap-7">
               {/* Showcase */}
               <motion.div
                 ref={cardRef}
                 onMouseMove={handleCardMouseMove}
                 onMouseEnter={() => setCardHovered(true)}
                 onMouseLeave={handleCardLeave}
-                style={reduceMotion ? undefined : { rotateX, rotateY, transformStyle: "preserve-3d" } as any}
+                style={reduceMotion || isCompact ? undefined : ({ rotateX, rotateY, transformStyle: "preserve-3d" } as any)}
                 initial={reduceMotion ? false : { opacity: 0, y: 22, scale: 0.985 }}
                 whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, margin: "-60px" }}
@@ -462,7 +604,7 @@ export default function Features() {
                 onPointerDown={onStagePointerDown}
                 onPointerUp={onStagePointerUp}
               >
-                <div className="relative aspect-[16/10.2] max-h-[44svh] w-full overflow-hidden bg-[#0e0e0e] lg:max-h-[30rem]">
+                <div className="relative aspect-[16/10.2] max-h-[38svh] w-full overflow-hidden bg-[#0e0e0e] sm:max-h-[44svh] lg:max-h-[30rem]">
                   <AnimatePresence mode="wait" custom={imgDirection}>
                     <motion.div key={`${active.id}-${activeImageId}`} custom={imgDirection} variants={reduceMotion ? undefined : slideVariants} initial={reduceMotion ? false : "enter"} animate="center" exit={reduceMotion ? undefined : "exit"} transition={{ duration: 0.5, ease: EASE_SOFT }} className="absolute inset-0 cursor-zoom-in" onClick={() => setLightbox({ card: active, idx: imageIndex })}>
                       <ProjectCover card={active} publicId={activeImageId} baseWidth={mediaWidth} isHovered={cardHovered} />
@@ -503,12 +645,12 @@ export default function Features() {
                   {/* Bottom controls */}
                   <div className="absolute inset-x-0 bottom-0 z-10">
                     <div className="bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-4">
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="flex items-center gap-2">
+                      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="flex flex-wrap items-center gap-2">
                           {activeImages.length > 1 ? (
                             <>
-                              <button type="button" onClick={() => cycleImage(-1)} className="inline-flex h-8 items-center gap-1 rounded-full bg-white px-3 text-xs font-medium text-black hover:bg-white/90" aria-label="Previous image"><ChevronLeft className="h-3.5 w-3.5" /> Prev</button>
-                              <button type="button" onClick={() => cycleImage(1)} className="inline-flex h-8 items-center gap-1 rounded-full border border-white/20 bg-black/50 px-3 text-xs text-white backdrop-blur-md hover:bg-black/60" aria-label="Next image">Next <ChevronRight className="h-3.5 w-3.5" /></button>
+                              <button type="button" onClick={() => cycleImage(-1)} className="inline-flex h-8 flex-1 items-center justify-center gap-1 rounded-full bg-white px-3 text-xs font-medium text-black hover:bg-white/90 sm:flex-none" aria-label="Previous image"><ChevronLeft className="h-3.5 w-3.5" /> Prev</button>
+                              <button type="button" onClick={() => cycleImage(1)} className="inline-flex h-8 flex-1 items-center justify-center gap-1 rounded-full border border-white/20 bg-black/50 px-3 text-xs text-white backdrop-blur-md hover:bg-black/60 sm:flex-none" aria-label="Next image">Next <ChevronRight className="h-3.5 w-3.5" /></button>
                               <span className="hidden rounded-full bg-black/60 px-2.5 py-1 text-[11px] text-white backdrop-blur-sm sm:inline-flex">{imageIndex + 1} / {activeImages.length}</span>
                             </>
                           ) : (
@@ -543,6 +685,9 @@ export default function Features() {
                     ))}
                   </div>
                 ) : null}
+                <p className="mt-3 text-center text-[11px] text-gray-500 lg:hidden">
+                  Swipe the project card left or right to browse
+                </p>
               </motion.div>
 
               {/* Rail */}
@@ -585,7 +730,7 @@ export default function Features() {
                           whileHover={reduceMotion ? undefined : { y: -1 }}
                           whileTap={{ scale: 0.99 }}
                           onClick={() => selectProject(idx)}
-                          className={`group relative flex min-h-[5.75rem] min-w-[17.5rem] snap-center gap-3 overflow-hidden rounded-[1.25rem] border p-3 text-left transition-all duration-300 lg:min-w-0 ${isActive ? "border-primary/30 bg-[#161616] text-[#E1E0CC] shadow-[0_8px_24px_rgba(0,0,0,0.4),0_0_0_1px_rgba(222,219,200,0.08)_inset]" : "border-white/10 bg-white/[0.02] text-gray-400 hover:border-white/20 hover:bg-white/[0.04] hover:text-[#E1E0CC]"}`}
+                          className={`group relative flex min-h-[5.25rem] w-[82vw] max-w-[18rem] shrink-0 snap-center gap-2.5 overflow-hidden rounded-[1.25rem] border p-2.5 text-left transition-all duration-300 sm:min-h-[5.75rem] sm:w-auto sm:max-w-none sm:gap-3 sm:p-3 lg:min-w-0 lg:w-full ${isActive ? "border-primary/30 bg-[#161616] text-[#E1E0CC] shadow-[0_8px_24px_rgba(0,0,0,0.4),0_0_0_1px_rgba(222,219,200,0.08)_inset]" : "border-white/10 bg-white/[0.02] text-gray-400 hover:border-white/20 hover:bg-white/[0.04] hover:text-[#E1E0CC]"}`}
                         >
                           <div className="relative h-[4.25rem] w-[5.75rem] shrink-0 overflow-hidden rounded-xl bg-[#1a1a1a]">
                             {thumbId ? (
@@ -636,14 +781,14 @@ export default function Features() {
                   <motion.div key={active.id} custom={direction} variants={reduceMotion ? undefined : slideVariants} initial={reduceMotion ? false : "enter"} animate="center" exit="exit" transition={{ duration: 0.45, ease: EASE_SOFT }} className="overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#0f0f0f] md:rounded-[2rem]">
                     <div className="grid gap-0 lg:grid-cols-[1.25fr_0.85fr]">
                       {/* Left: story */}
-                      <div className="p-6 md:p-8 lg:p-9">
+                      <div className="p-4 sm:p-6 md:p-8 lg:p-9">
                         <div className="flex flex-wrap items-center gap-2">
                           <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] tracking-[0.14em] text-primary uppercase"><span className="h-1 w-1 rounded-full bg-primary" /> {active.category} — {active.number}</span>
                           {active.featured ? <span className="inline-flex items-center gap-1 rounded-full bg-[#E1E0CC] px-2.5 py-1 text-[11px] font-medium tracking-wide text-black"><Sparkles className="h-3 w-3" /> Featured</span> : null}
                           <span className="text-xs text-gray-500">{activeImages.length} image{activeImages.length !== 1 ? "s" : ""} · {active.stack.length} tech</span>
                         </div>
 
-                        <h3 className="mt-4 font-serif text-[1.85rem] leading-[0.9] text-[#E1E0CC] italic sm:text-[2.25rem] md:text-[2.5rem]">{active.title}</h3>
+                        <h3 className="mt-4 font-serif text-[clamp(1.5rem,5vw,2.5rem)] leading-[0.9] text-[#E1E0CC] italic">{active.title}</h3>
 
                         <p className="mt-4 max-w-prose text-[15px] leading-relaxed text-gray-300 md:text-base">{active.description}</p>
 
@@ -663,7 +808,7 @@ export default function Features() {
                       </div>
 
                       {/* Right: stack + actions */}
-                      <div className="flex flex-col gap-6 border-t border-white/5 bg-white/[0.02] p-6 md:p-8 lg:border-l lg:border-t-0">
+                      <div className="flex flex-col gap-5 border-t border-white/5 bg-white/[0.02] p-4 sm:gap-6 sm:p-6 md:p-8 lg:border-l lg:border-t-0">
                         <div>
                           <p className="flex items-center gap-2 text-[11px] tracking-[0.14em] text-gray-500 uppercase"><Layers className="h-3.5 w-3.5" /> Tech stack</p>
                           <motion.ul initial="hidden" animate="visible" variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.05, delayChildren: 0.15 } } }} className="mt-3 flex flex-wrap gap-1.5" aria-label="Tech stack">

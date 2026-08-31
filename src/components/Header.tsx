@@ -110,9 +110,9 @@ export default function Header() {
         style={{ scaleX: scrollYProgress }}
       />
 
-      <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
+      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 pt-[env(safe-area-inset-top,0px)]">
         <div
-          className={`flex h-16 items-center justify-between px-5 transition-[background-color,border-color,backdrop-filter] duration-300 md:h-[4.25rem] md:px-10 ${
+          className={`flex h-14 items-center justify-between px-4 transition-[background-color,border-color,backdrop-filter] duration-300 max-md:pointer-events-auto max-md:border-b max-md:border-white/5 max-md:bg-black/55 max-md:backdrop-blur-md md:h-[4.25rem] md:px-10 ${
             scrolled
               ? "pointer-events-auto border-b border-white/5 bg-black/80 backdrop-blur-md"
               : ""
@@ -120,7 +120,7 @@ export default function Header() {
         >
           <a
             href="#top"
-            className={`text-sm tracking-wide text-[#E1E0CC] transition-opacity duration-300 ${
+            className={`text-sm tracking-wide text-[#E1E0CC] transition-opacity duration-300 max-md:pointer-events-auto max-md:opacity-100 ${
               scrolled ? "opacity-100" : "pointer-events-none opacity-0"
             }`}
           >
@@ -167,7 +167,7 @@ export default function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 flex flex-col justify-end bg-black px-6 pt-24 pb-12 md:hidden"
+            className="fixed inset-0 z-40 flex flex-col justify-end bg-black px-5 pt-24 pb-[max(3rem,env(safe-area-inset-bottom))] md:hidden"
           >
             <p className="mb-8 text-xs tracking-[0.2em] text-gray-500 uppercase">Younes Basir</p>
             <nav className="flex flex-col gap-2">
@@ -181,7 +181,7 @@ export default function Header() {
                   <NavAnchor
                     item={item}
                     current={item.href === `#${activeId}`}
-                    className="flex min-h-12 items-center text-3xl text-[#E1E0CC]"
+                    className="flex min-h-12 items-center text-2xl text-[#E1E0CC] sm:text-3xl"
                     onClick={() => setMenuOpen(false)}
                   />
                 </motion.div>

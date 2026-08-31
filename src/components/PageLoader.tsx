@@ -109,7 +109,7 @@ export default function PageLoader({ onExitStart, onDone }: PageLoaderProps) {
                         delay: 0.08 + index * 0.045,
                         ease: EASE_SOFT,
                       }}
-                      className="inline-block text-5xl leading-none font-medium tracking-[-0.06em] text-[#E1E0CC] sm:text-6xl md:text-7xl"
+                      className="inline-block text-[clamp(2rem,11vw,3.5rem)] leading-none font-medium tracking-[-0.06em] text-[#E1E0CC] sm:text-6xl md:text-7xl"
                     >
                       {char}
                     </motion.span>
@@ -120,7 +120,7 @@ export default function PageLoader({ onExitStart, onDone }: PageLoaderProps) {
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.65, delay: 0.42, ease: EASE_SOFT }}
-                  className="font-serif mt-2 text-3xl text-[#E1E0CC] italic sm:text-4xl md:text-5xl"
+                  className="font-serif mt-2 text-[clamp(1.5rem,7vw,2.5rem)] text-[#E1E0CC] italic sm:text-4xl md:text-5xl"
                 >
                   {LAST_NAME}
                 </motion.p>
@@ -137,7 +137,7 @@ export default function PageLoader({ onExitStart, onDone }: PageLoaderProps) {
               </motion.p>
             </div>
 
-            <div className="px-8 pb-10 md:px-12 md:pb-12">
+            <div className="px-5 pb-[max(2rem,env(safe-area-inset-bottom))] sm:px-8 md:px-12 md:pb-12">
               <div className="mb-3 flex items-center justify-between text-[11px] tracking-[0.18em] text-gray-500 uppercase">
                 <span>Loading</span>
                 <span>{displayProgress.toString().padStart(2, "0")}%</span>

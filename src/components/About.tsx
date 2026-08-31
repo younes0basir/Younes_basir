@@ -89,13 +89,13 @@ export default function About() {
   const chars = BODY_TEXT.split("");
 
   return (
-    <section id="about" className="bg-black px-4 py-20 md:px-8 md:py-32">
-      <div className="mx-auto max-w-6xl rounded-2xl bg-[#101010] px-5 py-14 md:rounded-[2rem] md:px-12 md:py-20 lg:px-16 lg:py-24">
+    <section id="about" className="bg-black px-3 py-16 sm:px-4 sm:py-20 md:px-8 md:py-32">
+      <div className="mx-auto max-w-6xl rounded-2xl bg-[#101010] px-4 py-10 sm:px-5 sm:py-14 md:rounded-[2rem] md:px-12 md:py-20 lg:px-16 lg:py-24">
         <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_11.5rem] lg:gap-x-14">
           <div className="order-1">
             <p className="text-primary text-xs tracking-[0.2em] uppercase">About</p>
             <WordsPullUpMultiStyle
-              className="mt-5 max-w-xl text-left text-3xl leading-[0.95] text-[#E1E0CC] sm:text-4xl md:text-5xl lg:text-[3.25rem]"
+              className="mt-5 max-w-xl text-left text-[clamp(1.65rem,6vw,3.25rem)] leading-[0.95] text-[#E1E0CC]"
               segments={[
                 { text: "I am Younes Basir,", className: "font-normal" },
                 { text: "an aspiring data analyst.", className: "font-serif italic", newline: true },
@@ -199,7 +199,7 @@ export default function About() {
           ))}
         </div>
 
-        <div className="mt-10 grid grid-cols-3 gap-4 border-t border-white/5 pt-10">
+        <div className="mt-10 grid grid-cols-3 gap-2 border-t border-white/5 pt-8 sm:mt-10 sm:gap-4 sm:pt-10">
           {STATS.map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -208,10 +208,12 @@ export default function About() {
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, delay: i * 0.12, ease: EASE_SOFT }}
             >
-              <p className="font-serif text-3xl text-[#E1E0CC] italic sm:text-4xl md:text-5xl">
+              <p className="font-serif text-2xl text-[#E1E0CC] italic sm:text-3xl md:text-5xl">
                 {stat.value}
               </p>
-              <p className="mt-2 text-xs tracking-wide text-gray-400 uppercase">{stat.label}</p>
+              <p className="mt-1.5 text-[10px] tracking-wide text-gray-400 uppercase sm:mt-2 sm:text-xs">
+                {stat.label}
+              </p>
             </motion.div>
           ))}
         </div>

@@ -230,7 +230,7 @@ export default function Gallery() {
   const filtered = filter === "all" ? items : items.filter((i) => i.eventType === filter);
 
   return (
-    <section id="gallery" className="relative overflow-hidden bg-black px-4 py-20 md:px-8 md:py-28">
+    <section id="gallery" className="relative overflow-hidden bg-black px-3 py-16 sm:px-4 sm:py-20 md:px-8 md:py-28">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.12]" />
       {!reduceMotion ? (
         <>
@@ -248,7 +248,7 @@ export default function Gallery() {
           className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
         >
           <WordsPullUpMultiStyle
-            className="max-w-xl text-left text-2xl font-normal sm:text-3xl md:text-4xl"
+            className="max-w-xl text-left text-[clamp(1.5rem,5.5vw,2.25rem)] font-normal sm:text-3xl md:text-4xl"
             segments={[
               { text: "Hackathons, meetups, and time outdoors.", className: "text-[#E1E0CC]" },
             ]}
@@ -264,7 +264,7 @@ export default function Gallery() {
           whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.15 }}
-          className="mt-8 flex flex-wrap gap-2"
+          className="mt-8 flex gap-2 overflow-x-auto pb-1 no-scrollbar sm:flex-wrap sm:overflow-visible"
           role="tablist"
           aria-label="Filter gallery"
         >
@@ -281,7 +281,7 @@ export default function Gallery() {
                 whileHover={reduceMotion ? undefined : { scale: 1.04, y: -1 }}
                 whileTap={reduceMotion ? undefined : { scale: 0.96 }}
                 onClick={() => setFilter(type)}
-                className={`relative inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs tracking-wide uppercase transition-colors ${
+                className={`relative inline-flex shrink-0 items-center gap-2 rounded-full border px-3.5 py-2 text-xs tracking-wide uppercase transition-colors sm:px-4 ${
                   active ? "border-primary/40 bg-primary text-black" : "border-white/10 bg-white/[0.03] text-gray-400 hover:border-white/20 hover:text-[#E1E0CC]"
                 }`}
               >

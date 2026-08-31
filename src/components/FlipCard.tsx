@@ -15,7 +15,7 @@ export default function FlipCard({
   front,
   back,
   className = "",
-  heightClass = "h-[22rem] sm:h-[24rem]",
+  heightClass = "h-[20rem] sm:h-[22rem] md:h-[24rem]",
   index = 0,
 }: FlipCardProps) {
   const [flipped, setFlipped] = useState(false);
