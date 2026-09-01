@@ -112,16 +112,29 @@ export async function fetchProjects(): Promise<ProjectRecord[]> {
     return DEFAULT_PROJECTS;
   }
 
-  const databases = new Databases(appwriteClient);
-  const response = await databases.listDocuments<ProjectDocument>({
-    databaseId: APPWRITE_DATABASE_ID,
-    collectionId: PROJECTS_COLLECTION_ID,
-    queries: [Query.orderAsc("order")],
-  });
+  try {
+    const databases = new Databases(appwriteClient);
+    const response = await databases.listDocuments<ProjectDocument>({
+      databaseId: APPWRITE_DATABASE_ID,
+      collectionId: PROJECTS_COLLECTION_ID,
+      queries: [Query.orderAsc("order")],
+    });
 
-  if (response.documents.length === 0) {
-    return DEFAULT_PROJECTS;
+    if (response.documents.length === 0) {
+      return DEFAULT_PROJECTS;
+    }
+
+    return response.documents.map(mapDocumentToRecord);
+  } catch (error: unknown) {
+    const err = error as { code?: number; type?: string; message?: string };
+    // 403 general_unknown_origin = Vercel domain not added in Appwrite Console → Platforms
+    if (err?.code === 403 && err?.type === "general_unknown_origin") {
+      console.error(
+        `[appwrite] 403 Invalid Origin — add your Vercel domain in Appwrite Console → Settings → Platforms → Add Platform → Web. Error: ${err.message}`,
+      );
+    } else {
+      console.error("[appwrite] fetchProjects failed:", err?.message ?? error);
+    }
+    throw error;
   }
-
-  return response.documents.map(mapDocumentToRecord);
 }

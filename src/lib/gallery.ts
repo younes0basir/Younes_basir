@@ -56,12 +56,24 @@ export async function fetchGalleryItems(): Promise<GalleryRecord[]> {
     return [];
   }
 
-  const databases = new Databases(appwriteClient);
-  const response = await databases.listDocuments<GalleryDocument>({
-    databaseId: APPWRITE_DATABASE_ID,
-    collectionId: GALLERY_COLLECTION_ID,
-    queries: [Query.orderAsc("order"), Query.orderDesc("date")],
-  });
+  try {
+    const databases = new Databases(appwriteClient);
+    const response = await databases.listDocuments<GalleryDocument>({
+      databaseId: APPWRITE_DATABASE_ID,
+      collectionId: GALLERY_COLLECTION_ID,
+      queries: [Query.orderAsc("order"), Query.orderDesc("date")],
+    });
 
-  return response.documents.map(mapDocumentToRecord);
+    return response.documents.map(mapDocumentToRecord);
+  } catch (error: unknown) {
+    const err = error as { code?: number; type?: string; message?: string };
+    if (err?.code === 403 && err?.type === "general_unknown_origin") {
+      console.error(
+        `[appwrite] 403 Invalid Origin — add your Vercel domain in Appwrite Console → Settings → Platforms → Web. Error: ${err.message}`,
+      );
+    } else {
+      console.error("[appwrite] fetchGalleryItems failed:", err?.message ?? error);
+    }
+    throw error;
+  }
 }
