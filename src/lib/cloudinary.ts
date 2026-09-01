@@ -17,9 +17,22 @@ export const cloudinaryUploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRE
 
 export const cloudinaryConfigured = Boolean(cloudinaryCloudName);
 
+// Warn in production if Cloudinary env is missing — Vite inlines VITE_* at build time,
+// so a Vercel deploy without these vars will silently break uploads/images.
+if (!cloudinaryConfigured && !import.meta.env.DEV) {
+  console.warn(
+    "[cloudinary] VITE_CLOUDINARY_CLOUD_NAME missing — images/uploads disabled. Add it in Vercel → Settings → Environment Variables and redeploy.",
+  );
+}
+if (!cloudinaryUploadPreset && !import.meta.env.DEV && cloudinaryConfigured) {
+  console.warn(
+    "[cloudinary] VITE_CLOUDINARY_UPLOAD_PRESET missing — uploads will fail. Create an UNSIGNED preset in Cloudinary Console and add it to Vercel env.",
+  );
+}
+
 export const cld = new Cloudinary({
   cloud: {
-    cloudName: cloudinaryCloudName,
+    cloudName: cloudinaryCloudName || "placeholder",
   },
 });
 

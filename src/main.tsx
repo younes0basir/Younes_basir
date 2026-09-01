@@ -17,15 +17,32 @@ const queryClient = new QueryClient({
   },
 });
 
+const appwriteEndpoint = import.meta.env.VITE_APPWRITE_ENDPOINT;
+const appwriteProjectId = import.meta.env.VITE_APPWRITE_PROJECT_ID;
+const appwriteReady =
+  Boolean(
+    appwriteEndpoint &&
+      appwriteProjectId &&
+      !appwriteEndpoint.includes("<REGION>") &&
+      appwriteProjectId !== "<PROJECT_ID>",
+  );
+
+if (!appwriteReady && !import.meta.env.DEV) {
+  console.warn(
+    "[appwrite] VITE_APPWRITE_ENDPOINT / VITE_APPWRITE_PROJECT_ID missing in production build — Appwrite features will be disabled. Add them in Vercel → Settings → Environment Variables and redeploy.",
+  );
+}
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <AppwriteProvider
-        endpoint={import.meta.env.VITE_APPWRITE_ENDPOINT}
-        projectId={import.meta.env.VITE_APPWRITE_PROJECT_ID}
-      >
+      {appwriteReady ? (
+        <AppwriteProvider endpoint={appwriteEndpoint} projectId={appwriteProjectId}>
+          <App />
+        </AppwriteProvider>
+      ) : (
         <App />
-      </AppwriteProvider>
+      )}
     </QueryClientProvider>
   </StrictMode>,
 );
