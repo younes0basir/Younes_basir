@@ -45,3 +45,6 @@ Thumbs.db
 
 # Cursor local settings (project skills in .cursor/skills/ are tracked)
 .cursor/settings.json
+
+.vercel
+.env*
