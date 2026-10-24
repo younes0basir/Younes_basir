@@ -44,6 +44,33 @@ function useMediaBaseWidth() {
   return width;
 }
 
+function ViewLiveLink({
+  href,
+  compact = false,
+  className = "",
+}: {
+  href: string;
+  compact?: boolean;
+  className?: string;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      onClick={(event) => event.stopPropagation()}
+      onPointerDown={(event) => event.stopPropagation()}
+      className={`group/live inline-flex items-center justify-center rounded-full bg-primary font-medium text-black shadow-[0_10px_24px_rgba(222,219,200,0.16)] transition-shadow hover:shadow-[0_14px_32px_rgba(222,219,200,0.22)] ${
+        compact ? "h-9 gap-1.5 px-3.5 text-xs" : "h-11 w-full gap-2 px-5 text-sm"
+      } ${className}`}
+    >
+      <Eye className={compact ? "h-3.5 w-3.5" : "h-4 w-4"} />
+      View live
+      <ExternalLink className="h-3.5 w-3.5 opacity-70 transition-transform group-hover/live:translate-x-0.5" />
+    </a>
+  );
+}
+
 function StatusBadge({ live }: { live: boolean }) {
   if (live) {
     return (
@@ -97,6 +124,7 @@ function ProjectsSkeleton() {
 function ProjectLightbox({ card, startIndex, onClose }: { card: ProjectCard; startIndex: number; onClose: () => void }) {
   const reduceMotion = useReducedMotion();
   const images = card.imagePublicIds.length ? card.imagePublicIds : [resolveMainImagePublicId(card)].filter(Boolean) as string[];
+  const liveHref = externalHref(card.href);
   const [idx, setIdx] = useState(startIndex);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -141,12 +169,15 @@ function ProjectLightbox({ card, startIndex, onClose }: { card: ProjectCard; sta
             </>
           ) : null}
         </div>
-        <div className="flex items-center justify-between gap-4 border-t border-white/5 bg-[#101010] px-6 py-4">
+        <div className="flex flex-col gap-3 border-t border-white/5 bg-[#101010] px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <div className="min-w-0">
             <p className="text-[11px] tracking-[0.16em] text-primary uppercase">{card.number} · {card.category}</p>
             <p className="truncate font-medium text-[#E1E0CC]">{card.title}</p>
           </div>
-          <span className="shrink-0 rounded-full bg-white/10 px-2.5 py-1 text-xs text-gray-300">{idx + 1} / {images.length}</span>
+          <div className="flex items-center justify-between gap-2 sm:justify-end">
+            {liveHref ? <ViewLiveLink href={liveHref} compact className="w-auto" /> : null}
+            <span className="shrink-0 rounded-full bg-white/10 px-2.5 py-1 text-xs text-gray-300">{idx + 1} / {images.length}</span>
+          </div>
         </div>
       </motion.div>
     </motion.div>
@@ -389,7 +420,7 @@ export default function Features() {
           </motion.div>
         </div>
 
-        {isError ? <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-4 rounded-xl border border-amber-500/20 bg-amber-500/10 px-3 py-2 text-sm text-amber-200">Could not reach Appwrite — showing cached project data.</motion.p> : null}
+        {isError ? <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-4 rounded-xl border border-amber-500/20 bg-amber-500/10 px-3 py-2 text-sm text-amber-200">Could not load projects — showing saved project data.</motion.p> : null}
 
         {isLoading && projects.length === 0 ? (
           <ProjectsSkeleton />
@@ -403,29 +434,33 @@ export default function Features() {
           <motion.div layout className="mt-8 grid min-w-0 grid-cols-1 gap-4 sm:mt-10 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
             {filtered.map((project, idx) => {
               const pid = resolveMainImagePublicId(project);
-              const live = Boolean(externalHref(project.href));
+              const projectLiveHref = externalHref(project.href);
+              const live = Boolean(projectLiveHref);
               const isSelected = isCompact && idx === activeIndex;
               return (
-                <motion.button
+                <motion.article
                   key={project.id}
-                  type="button"
                   layout={!reduceMotion}
                   initial={reduceMotion ? false : { opacity: 0, y: 16, scale: 0.98 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.45, delay: idx * 0.04, ease: EASE_SOFT }}
                   whileHover={reduceMotion || isCompact ? undefined : { y: -4 }}
-                  onClick={() => {
-                    setActiveIndex(idx);
-                    if (!isCompact) {
-                      setViewMode("showcase");
-                    }
-                  }}
                   className={`group relative flex w-full min-w-0 flex-col overflow-hidden rounded-[1.25rem] border text-left transition-colors sm:rounded-[1.75rem] ${
                     isSelected
                       ? "border-primary/40 bg-[#121212] ring-1 ring-primary/20"
                       : "border-white/10 bg-[#0f0f0f] hover:border-white/20"
                   }`}
                 >
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActiveIndex(idx);
+                      if (!isCompact) {
+                        setViewMode("showcase");
+                      }
+                    }}
+                    className="flex w-full min-w-0 flex-col text-left"
+                  >
                   <div className="relative aspect-[16/10] overflow-hidden bg-[#111]">
                     {pid ? <MediaPreview publicId={pid} alt={project.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" frame={project.imageFrame} baseWidth={640} /> : <div className="flex h-full items-center justify-center px-4 text-center text-sm text-gray-600">{project.title}</div>}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
@@ -434,7 +469,7 @@ export default function Features() {
                       <StatusBadge live={live} />
                     </div>
                   </div>
-                  <div className="flex flex-1 flex-col p-4 sm:p-5">
+                  <div className={`flex flex-1 flex-col px-4 pt-4 sm:px-5 sm:pt-5 ${projectLiveHref ? "" : "pb-4 sm:pb-5"}`}>
                     <h3 className="font-serif text-lg leading-tight text-[#E1E0CC] italic sm:text-xl">{project.title}</h3>
                     <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-gray-400">{project.description}</p>
                     <div className="mt-3 flex flex-wrap gap-1.5">
@@ -444,7 +479,13 @@ export default function Features() {
                       {project.stack.length > 3 ? <span className="rounded-full bg-white/10 px-2 py-1 text-[10px] text-gray-300">+{project.stack.length - 3}</span> : null}
                     </div>
                   </div>
-                </motion.button>
+                  </button>
+                  {projectLiveHref ? (
+                    <div className="px-4 pb-4 sm:px-5 sm:pb-5">
+                      <ViewLiveLink href={projectLiveHref} />
+                    </div>
+                  ) : null}
+                </motion.article>
               );
             })}
           </motion.div>
@@ -544,14 +585,7 @@ export default function Features() {
                       </ul>
                       <div className="mt-4 grid gap-2">
                         {liveHref ? (
-                          <a
-                            href={liveHref}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-medium text-black"
-                          >
-                            View live <ExternalLink className="h-3.5 w-3.5" />
-                          </a>
+                          <ViewLiveLink href={liveHref} />
                         ) : (
                           <span className="inline-flex h-11 w-full items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm text-gray-400">
                             Coming soon
@@ -623,6 +657,11 @@ export default function Features() {
                       <StatusBadge live={Boolean(liveHref)} />
                     </div>
                     <div className="flex items-center gap-2">
+                      {liveHref ? (
+                        <span className="hidden sm:inline-flex">
+                          <ViewLiveLink href={liveHref} compact className="w-auto" />
+                        </span>
+                      ) : null}
                       <span className="hidden items-center gap-1.5 rounded-full bg-black/55 px-2.5 py-1 text-[11px] text-white backdrop-blur-md sm:inline-flex">
                         <Layers className="h-3 w-3 opacity-70" /> {String(activeIndex + 1).padStart(2, "0")} / {String(filtered.length).padStart(2, "0")}
                       </span>
@@ -645,6 +684,11 @@ export default function Features() {
                   {/* Bottom controls */}
                   <div className="absolute inset-x-0 bottom-0 z-10">
                     <div className="bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-4">
+                      {liveHref ? (
+                        <div className="mb-2 sm:hidden">
+                          <ViewLiveLink href={liveHref} compact className="w-full" />
+                        </div>
+                      ) : null}
                       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                         <div className="flex flex-wrap items-center gap-2">
                           {activeImages.length > 1 ? (
@@ -714,10 +758,11 @@ export default function Features() {
                     {filtered.map((project, idx) => {
                       const isActive = idx === activeIndex;
                       const thumbId = resolveMainImagePublicId(project);
-                      const live = Boolean(externalHref(project.href));
+                      const projectLiveHref = externalHref(project.href);
+                      const live = Boolean(projectLiveHref);
                       return (
+                        <div key={project.id} className="flex w-[82vw] max-w-[18rem] shrink-0 snap-center flex-col gap-2 lg:w-full lg:max-w-none">
                         <motion.button
-                          key={project.id}
                           id={`project-tab-${project.id}`}
                           type="button"
                           role="tab"
@@ -730,7 +775,7 @@ export default function Features() {
                           whileHover={reduceMotion ? undefined : { y: -1 }}
                           whileTap={{ scale: 0.99 }}
                           onClick={() => selectProject(idx)}
-                          className={`group relative flex min-h-[5.25rem] w-[82vw] max-w-[18rem] shrink-0 snap-center gap-2.5 overflow-hidden rounded-[1.25rem] border p-2.5 text-left transition-all duration-300 sm:min-h-[5.75rem] sm:w-auto sm:max-w-none sm:gap-3 sm:p-3 lg:min-w-0 lg:w-full ${isActive ? "border-primary/30 bg-[#161616] text-[#E1E0CC] shadow-[0_8px_24px_rgba(0,0,0,0.4),0_0_0_1px_rgba(222,219,200,0.08)_inset]" : "border-white/10 bg-white/[0.02] text-gray-400 hover:border-white/20 hover:bg-white/[0.04] hover:text-[#E1E0CC]"}`}
+                          className={`group relative flex min-h-[5.25rem] w-full gap-2.5 overflow-hidden rounded-[1.25rem] border p-2.5 text-left transition-all duration-300 sm:min-h-[5.75rem] sm:gap-3 sm:p-3 ${isActive ? "border-primary/30 bg-[#161616] text-[#E1E0CC] shadow-[0_8px_24px_rgba(0,0,0,0.4),0_0_0_1px_rgba(222,219,200,0.08)_inset]" : "border-white/10 bg-white/[0.02] text-gray-400 hover:border-white/20 hover:bg-white/[0.04] hover:text-[#E1E0CC]"}`}
                         >
                           <div className="relative h-[4.25rem] w-[5.75rem] shrink-0 overflow-hidden rounded-xl bg-[#1a1a1a]">
                             {thumbId ? (
@@ -766,6 +811,8 @@ export default function Features() {
                             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-white/20 opacity-0 transition-opacity group-hover:opacity-100"><ArrowUpRight className="h-4 w-4" /></span>
                           )}
                         </motion.button>
+                        {isActive && projectLiveHref ? <ViewLiveLink href={projectLiveHref} compact className="w-full" /> : null}
+                        </div>
                       );
                     })}
                   </motion.div>
@@ -824,9 +871,9 @@ export default function Features() {
                           <p className="text-xs tracking-[0.12em] text-gray-500 uppercase">Actions</p>
                           <div className="mt-3 grid gap-2">
                             {liveHref ? (
-                              <motion.a href={liveHref} target="_blank" rel="noreferrer" style={liveCta.style} onMouseMove={liveCta.onMouseMove} onMouseLeave={liveCta.onMouseLeave} whileHover={reduceMotion ? undefined : { scale: 1.01 }} whileTap={{ scale: 0.99 }} className="group inline-flex h-11 items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-medium text-black shadow-[0_10px_24px_rgba(222,219,200,0.16)] hover:shadow-[0_14px_32px_rgba(222,219,200,0.22)]">
-                                <Eye className="h-4 w-4" /> View live <ExternalLink className="h-3.5 w-3.5 opacity-70 transition-transform group-hover:translate-x-0.5" />
-                              </motion.a>
+                              <motion.div className="w-full" style={liveCta.style} onMouseMove={liveCta.onMouseMove} onMouseLeave={liveCta.onMouseLeave} whileHover={reduceMotion ? undefined : { scale: 1.01 }} whileTap={{ scale: 0.99 }}>
+                                <ViewLiveLink href={liveHref} />
+                              </motion.div>
                             ) : (
                               <span className="inline-flex h-11 items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 text-sm text-gray-400">Coming soon</span>
                             )}

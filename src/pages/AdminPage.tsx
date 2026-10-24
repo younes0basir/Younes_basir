@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "@appwrite.io/react";
 import { ArrowLeft, Loader2, LogOut } from "lucide-react";
 import AdminLoginForm from "../components/admin/AdminLoginForm.tsx";
 import GalleryAdminPanel from "../components/admin/GalleryAdminPanel.tsx";
 import ProjectsAdminPanel from "../components/admin/ProjectsAdminPanel.tsx";
+import { useAdminSession } from "../lib/admin-session.ts";
 
 type AdminTab = "projects" | "gallery";
 
 export default function AdminPage() {
-  const { user, isLoading, signOut } = useAuth();
+  const { email, isLoading, signIn, signOut } = useAdminSession();
   const [tab, setTab] = useState<AdminTab>("projects");
   const [signingOut, setSigningOut] = useState(false);
 
@@ -21,7 +21,7 @@ export default function AdminPage() {
     );
   }
 
-  if (!user) {
+  if (!email) {
     return (
       <div className="min-h-screen bg-black">
         <div className="px-4 pt-6">
@@ -30,7 +30,7 @@ export default function AdminPage() {
             Back to portfolio
           </Link>
         </div>
-        <AdminLoginForm />
+        <AdminLoginForm signIn={signIn} />
       </div>
     );
   }
@@ -45,7 +45,7 @@ export default function AdminPage() {
               Portfolio
             </Link>
             <h1 className="mt-3 text-2xl text-[#E1E0CC]">Admin space</h1>
-            <p className="mt-1 text-sm text-gray-500">Signed in as {user.email}</p>
+            <p className="mt-1 text-sm text-gray-500">Signed in as {email}</p>
           </div>
 
           <button
@@ -54,7 +54,7 @@ export default function AdminPage() {
             onClick={async () => {
               setSigningOut(true);
               try {
-                await signOut.signOut();
+                await signOut();
               } finally {
                 setSigningOut(false);
               }

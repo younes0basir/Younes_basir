@@ -47,7 +47,7 @@ function arrayToLines(value: string[]) {
 
 export default function ProjectsAdminPanel() {
   const queryClient = useQueryClient();
-  const { data: projects = [], isLoading } = useQuery({
+  const { data: projects = [], isLoading, isError, error } = useQuery({
     queryKey: ["admin", "projects"],
     queryFn: listProjectsAdmin,
   });
@@ -308,6 +308,10 @@ export default function ProjectsAdminPanel() {
 
       {isLoading ? (
         <p className="text-sm text-gray-500">Loading projects…</p>
+      ) : isError ? (
+        <p className="text-sm text-red-400">
+          {error instanceof Error ? error.message : "Could not load projects"}
+        </p>
       ) : (
         <ul className="space-y-3">
           {projects.map((project) => {

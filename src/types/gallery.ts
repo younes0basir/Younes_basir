@@ -1,4 +1,4 @@
-import type { GalleryEventType } from "../lib/appwrite-config.ts";
+import type { GalleryEventType } from "../lib/gallery-events.ts";
 import type { MediaFields } from "./media.ts";
 
 export type GalleryRecord = {

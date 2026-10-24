@@ -4,7 +4,7 @@ import FlipCard from "./FlipCard.tsx";
 import MediaPreview from "./MediaPreview.tsx";
 import WordsPullUpMultiStyle from "./WordsPullUpMultiStyle.tsx";
 import { useGallery } from "../hooks/useGallery.ts";
-import { GALLERY_EVENT_TYPES, galleryEventLabel } from "../lib/appwrite-config.ts";
+import { GALLERY_EVENT_TYPES, galleryEventLabel } from "../lib/gallery-events.ts";
 import { resolveMainImagePublicId } from "../types/media.ts";
 import type { GalleryRecord } from "../types/gallery.ts";
 import { EASE_SOFT } from "../lib/motion.ts";

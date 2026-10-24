@@ -6,7 +6,7 @@ import MediaPreview from "../MediaPreview.tsx";
 import {
   GALLERY_EVENT_TYPES,
   galleryEventLabel,
-} from "../../lib/appwrite-config.ts";
+} from "../../lib/gallery-events.ts";
 import {
   createGalleryItem,
   deleteGalleryItem,
@@ -29,7 +29,7 @@ const emptyGalleryItem = (): GalleryFormData => ({
 
 export default function GalleryAdminPanel() {
   const queryClient = useQueryClient();
-  const { data: items = [], isLoading } = useQuery({
+  const { data: items = [], isLoading, isError, error } = useQuery({
     queryKey: ["admin", "gallery"],
     queryFn: listGalleryAdmin,
   });
@@ -219,6 +219,10 @@ export default function GalleryAdminPanel() {
 
       {isLoading ? (
         <p className="text-sm text-gray-500">Loading gallery…</p>
+      ) : isError ? (
+        <p className="text-sm text-red-400">
+          {error instanceof Error ? error.message : "Could not load gallery"}
+        </p>
       ) : items.length === 0 ? (
         <p className="rounded-xl border border-dashed border-white/10 px-4 py-8 text-center text-sm text-gray-500">
           No gallery entries yet.
